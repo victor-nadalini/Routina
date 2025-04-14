@@ -1,8 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:routina/controllers/task_controller.dart';
 
 final logger = Logger();
-
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -20,13 +22,13 @@ class HomeScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
 
             children: [
-              Align( 
+              Align(
                 alignment: Alignment.topCenter,
-              child: Text(
-                "SE MEU DIA",
-                style: TextStyle(color: Colors.blueAccent, fontSize: 30),
+                child: Text(
+                  "SE MEU DIA",
+                  style: TextStyle(color: Colors.blueAccent, fontSize: 30),
+                ),
               ),
-            ),
               SizedBox(height: 66),
               // lista de tarefas:
               Container(
@@ -41,31 +43,6 @@ class HomeScreen extends StatelessWidget {
                 padding: EdgeInsets.all(11),
 
                 child: Align(
-                alignment: Alignment.centerLeft,
-                child: IconButton(
-                  color: Colors.blueAccent,
-                  onPressed: () {
-                    logger.d("concluir tarefa");
-                  },
-                  icon: Icon(Icons.radio_button_unchecked),
-                ),
-              ),
-            ),
-
-              SizedBox(height: 10),
-
-              Container(
-                width: 340,
-                height: 73,
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(color: Colors.blueAccent),
-                ),
-
-                padding: EdgeInsets.all(8),
-
-                child: Align(
                   alignment: Alignment.centerLeft,
                   child: IconButton(
                     color: Colors.blueAccent,
@@ -76,6 +53,8 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
+
+              SizedBox(height: 11),
 
               SizedBox(height: 16),
 
@@ -89,21 +68,36 @@ class HomeScreen extends StatelessWidget {
                 child: Text("PLANO B", style: TextStyle(color: Colors.white)),
               ),
 
-              SizedBox(height: 10),
+              SizedBox(height: 17),
 
-              ElevatedButton(
-                onPressed: () {
-                  logger.d("GERA NOVA TAREFA");
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  side: BorderSide(color: Colors.blueAccent, width: 1),
-                ),
-                child: Text(
-                  "NOVA TAREFA",
-                  style: TextStyle(color: Colors.blueAccent),
+              Center(
+              child: SizedBox(
+                height: 33,
+                width: 251,
+                child: TextField(
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blueAccent)
+                      ),
+                    hintText: "Digite nova tarefa?",
+                    hintStyle: TextStyle(color: Colors.blueAccent),
+                    fillColor: Colors.black,
+                    contentPadding: EdgeInsets.symmetric(vertical: 6),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blueAccent,)
+                    ),
+                  ),
+                  cursorColor: Colors.blueAccent,
+                  style: TextStyle(color:Colors.blueAccent),
+                  onSubmitted: (String novaTarefaInput) {
+                    TaskController().adicionarTarefa(novaTarefaInput);
+                    logger.d("tarefa adicionada com sucesso $novaTarefaInput lista de tarefas");
+                  }
                 ),
               ),
+            ),
             ],
           ),
         ),
