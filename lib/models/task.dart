@@ -1,9 +1,9 @@
 class Task {
   String titulo;
-  bool comcluida;
+  bool concluida;
 
   Task ({
     required this.titulo, 
-    this.comcluida = false, 
+    this.concluida = false, 
   });
 }
