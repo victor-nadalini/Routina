@@ -3,7 +3,9 @@ class Task {
   bool concluida;
 
   Task ({
-    required this.titulo, 
-    this.concluida = false, 
+    required 
+    this.titulo, 
+    this.concluida = false,
+
   });
 }
