@@ -13,6 +13,7 @@ class TaskController {
       tarefas[index].concluida = true;
     }
   }
+
   void deleteTask(int index) {
     if (index >= 0 && index < tarefas.length) {
       tarefas.removeAt(index);
@@ -22,4 +23,10 @@ class TaskController {
   List<Task> listarTarefas() {
     return tarefas;
   }
+
+  List<Task> get tarefasAtivas =>
+      tarefas.where((tarefa) => !tarefa.concluida).toList();
+
+  List<Task> get tarefasConcluidas =>
+      tarefas.where((tarefa) => tarefa.concluida).toList();
 }
