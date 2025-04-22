@@ -18,8 +18,11 @@ class TaskController {
   }
 
   void deleteTask(int index) {
-    if (index >= 0 && index < tarefas.length) {
-      tarefas.removeAt(index);
+    if (index >= 0 && index < tarefasAtivas.length) {
+      tarefasConcluidas.removeAt(index);
+    }
+    if (index >= 0 && index < tarefasConcluidas.length) {
+      tarefasConcluidas.removeAt(index);
     }
   }
 

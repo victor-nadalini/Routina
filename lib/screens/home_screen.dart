@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: _taskController.tarefasAtivas.length,
                 itemBuilder: (context, index) {
-                  var tarefa = _taskController.tarefas[index];
+                  var tarefa = _taskController.tarefasAtivas[index];
                   return Dismissible(
                     key: Key(tarefa.id),
                     direction: DismissDirection.endToStart,
@@ -129,9 +129,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: _taskController.tarefasConcluidas.length,
                 itemBuilder: (context, index) {
-                  var tarefa = _taskController.tarefas[index];
+                  var tarefa = _taskController.tarefasConcluidas[index];
                   return Dismissible(
-                    key: Key(tarefa.id),
+                    key: Key(tarefa.id), // adicionar tarefa.id.tarefasConcluidas
                     direction: DismissDirection.endToStart,
                     onDismissed: (direction) {
                       setState(() {
