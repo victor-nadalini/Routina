@@ -44,9 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemCount: _taskController.tarefasAtivas.length,
                 itemBuilder: (context, index) {
                   var tarefa = _taskController.tarefas[index];
-
                   return Dismissible(
-                    key: Key(tarefa.titulo[index]),
+                    key: Key(tarefa.id),
                     direction: DismissDirection.endToStart,
                     onDismissed: (direction) {
                       setState(() {
@@ -132,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (context, index) {
                   var tarefa = _taskController.tarefas[index];
                   return Dismissible(
-                    key: Key(tarefa.titulo[index]),
+                    key: Key(tarefa.id),
                     direction: DismissDirection.endToStart,
                     onDismissed: (direction) {
                       setState(() {
@@ -228,7 +227,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     cursorColor: Colors.blueAccent,
-                    style: TextStyle(color: Colors.blueAccent),
+                    style: TextStyle(
+                      color: Colors.blueAccent,
+                      ),
                     // Quando o usuário pressiona Enter, adiciona a nova tarefa
                     onSubmitted: (String inputNovaTarefa) {
                       setState(() {

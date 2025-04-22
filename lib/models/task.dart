@@ -1,11 +1,11 @@
 class Task {
-  String titulo;
+  final String id;
+  final String titulo;
   bool concluida;
 
-  Task ({
-    required 
-    this.titulo, 
-    this.concluida = false,
-
-  });
+  Task({
+    required this.id,
+    required this.titulo, 
+    this.concluida = false
+     });
 }
