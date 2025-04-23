@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     direction: DismissDirection.endToStart,
                     onDismissed: (direction) {
                       setState(() {
-                        _taskController.deleteTask(index);
+                        _taskController.deleteTaskAtiva(index);
                         logger.d("deletada tarefa $index");
                       });
 
@@ -135,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     direction: DismissDirection.endToStart,
                     onDismissed: (direction) {
                       setState(() {
-                        _taskController.deleteTask(index);
+                        _taskController.deleteTaskConcluidas(index);
                         logger.d("deletada tarefa $index");
                       });
 

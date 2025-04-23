@@ -3,36 +3,43 @@ import 'package:uuid/uuid.dart';
 
 
 class TaskController {
-  List<Task> tarefas = [];
+  List<Task> tarefasAtivas = [];
+  List<Task> tarefasConcluidas = [];
   final _uuid = Uuid();
 
   void adicionarTarefa(String titulo) {
     Task novaTarefa = Task(titulo: titulo, id: _uuid.v4());
-    tarefas.add(novaTarefa);
+    tarefasAtivas.add(novaTarefa);
   }
 
   void concluirTarefa(int index) {
     if (index >= 0 && index < tarefasAtivas.length) {
       tarefasAtivas[index].concluida = true;
+
+      var tarefa = tarefasAtivas[index];
+
+      tarefasAtivas.removeAt(index);
+
+      tarefasConcluidas.add(tarefa);
     }
   }
 
-  void deleteTask(int index) {
+  void deleteTaskAtiva(int index) {
     if (index >= 0 && index < tarefasAtivas.length) {
-      tarefasConcluidas.removeAt(index);
+      tarefasAtivas.removeAt(index);
     }
+  }
+
+  void deleteTaskConcluidas(int index) {
     if (index >= 0 && index < tarefasConcluidas.length) {
       tarefasConcluidas.removeAt(index);
     }
   }
 
-  List<Task> listarTarefas() {
-    return tarefas;
-  }
-
-  List<Task> get tarefasAtivas =>
-      tarefas.where((tarefa) => !tarefa.concluida).toList();
-
-  List<Task> get tarefasConcluidas =>
-      tarefas.where((tarefa) => tarefa.concluida).toList();
+  Map<String, List<Task>> getTarefasSeparadas() {
+  return {
+    'ativas': tarefasAtivas,
+    'concluidas': tarefasConcluidas,
+  };
+}
 }
