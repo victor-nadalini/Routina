@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
 import 'screens/splash_screen.dart';
+import 'screens/change_login.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +21,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const SplashScreen(),
-        '/kanban': (context) => HomeScreen()
+        '/change': (context) => changeLogin(),
+        '/kanban': (context) => HomeScreen() 
       }
       
     );
