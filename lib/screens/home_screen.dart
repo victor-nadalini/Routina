@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 alignment: Alignment.topCenter,
                 child: Text(
                   "SE MEU DIA",
-                  style: TextStyle(color: Colors.blueAccent, fontSize: 30),
+                  style: TextStyle(color: Colors.blueAccent, fontSize: 30,),
                 ),
               ),
               SizedBox(height: 66),
@@ -123,72 +123,76 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
 
-               if (mostrarConcluida)
-              ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: _taskController.tarefasConcluidas.length,
-                itemBuilder: (context, index) {
-                  var tarefa = _taskController.tarefasConcluidas[index];
-                  return Dismissible(
-                    key: Key(tarefa.id), // adicionar tarefa.id.tarefasConcluidas
-                    direction: DismissDirection.endToStart,
-                    onDismissed: (direction) {
-                      setState(() {
-                        _taskController.deleteTaskConcluidas(index);
-                        logger.d("deletada tarefa $index");
-                      });
+              if (mostrarConcluida)
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: _taskController.tarefasConcluidas.length,
+                  itemBuilder: (context, index) {
+                    var tarefa = _taskController.tarefasConcluidas[index];
+                    return Dismissible(
+                      key: Key(
+                        tarefa.id,
+                      ), // adicionar tarefa.id.tarefasConcluidas
+                      direction: DismissDirection.endToStart,
+                      onDismissed: (direction) {
+                        setState(() {
+                          _taskController.deleteTaskConcluidas(index);
+                          logger.d("deletada tarefa $index");
+                        });
 
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Tarefa removida")),
-                      );
-                    },
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Tarefa removida")),
+                        );
+                      },
 
-                    background: Container(
-                      color: Colors.red,
-                      alignment: Alignment.centerRight,
-                      padding: EdgeInsets.only(right: 20),
-                      child: Icon(Icons.delete, color: Colors.white),
-                    ),
-
-                    child: Container(
-                      width: 340,
-                      height: 73,
-                      margin: EdgeInsets.only(bottom: 11),
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: Colors.blueAccent),
+                      background: Container(
+                        color: Colors.red,
+                        alignment: Alignment.centerRight,
+                        padding: EdgeInsets.only(right: 20),
+                        child: Icon(Icons.delete, color: Colors.white),
                       ),
-                      padding: EdgeInsets.all(11),
-                      child: Row(
-                        children: [
-                          IconButton(
-                            color: Colors.blueAccent,
-                            onPressed: () {
-                              setState(() {
-                                logger.d("tarefas ja na lista de conclusão");
-                              });
-                            },
-                            icon: Icon(Icons.radio_button_unchecked),
-                          ),
-                          Expanded(
-                            child: Text(
-                              tarefa.titulo,
-                              style: TextStyle(color: Colors.blueAccent),
+
+                      child: Container(
+                        width: 340,
+                        height: 73,
+                        margin: EdgeInsets.only(bottom: 11),
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.blueAccent),
+                        ),
+                        padding: EdgeInsets.all(11),
+                        child: Row(
+                          children: [
+                            IconButton(
+                              color: Colors.blueAccent,
+                              onPressed: () {
+                                setState(() {
+                                  logger.d("tarefas ja na lista de conclusão");
+                                });
+                              },
+                              icon: Icon(Icons.radio_button_unchecked),
                             ),
-                          ),
-                        ],
+                            Expanded(
+                              child: Text(
+                                tarefa.titulo,
+                                style: TextStyle(color: Colors.blueAccent),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                },
-              ),
+                    );
+                  },
+                ),
 
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
 
+              
               ElevatedButton(
                 onPressed: () {
+                  Navigator.pushReplacementNamed(context, '/change');
                   logger.d("gera lista de plano b");
                 },
                 style: ElevatedButton.styleFrom(
@@ -196,11 +200,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 child: Text("PLANO B", style: TextStyle(color: Colors.white)),
               ),
+              
 
-              SizedBox(height: 17),
+              SizedBox(height: 16),
 
               // Campo de texto para adicionar novas tarefas
-              Center(
+              Align(
+                alignment: Alignment.bottomCenter,
                 child: SizedBox(
                   height: 33,
                   width: 251,
@@ -227,9 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     cursorColor: Colors.blueAccent,
-                    style: TextStyle(
-                      color: Colors.blueAccent,
-                      ),
+                    style: TextStyle(color: Colors.blueAccent),
                     // Quando o usuário pressiona Enter, adiciona a nova tarefa
                     onSubmitted: (String inputNovaTarefa) {
                       setState(() {
