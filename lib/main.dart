@@ -3,6 +3,7 @@ import 'screens/home_screen.dart';
 import 'screens/splash_screen.dart';
 import 'screens/change_login.dart';
 import 'screens/login.dart';
+import 'screens/register.dart';
 
 
 void main() {
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const SplashScreen(),
         '/change': (context) => changeLogin(),
         '/Login': (context) => Login(),
+        '/RegisterUser': (context) => RegisterUserState(),
         '/kanban': (context) => HomeScreen() 
       }
       
