@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 alignment: Alignment.topCenter,
                 child: Text(
                   "SE MEU DIA",
-                  style: TextStyle(color: Colors.blueAccent, fontSize: 30,),
+                  style: TextStyle(color: Colors.blueAccent, fontSize: 30),
                 ),
               ),
               SizedBox(height: 66),
@@ -189,7 +189,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
               SizedBox(height: 16),
 
-              
               ElevatedButton(
                 onPressed: () {
                   Navigator.pushReplacementNamed(context, '/change');
@@ -200,7 +199,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 child: Text("PLANO B", style: TextStyle(color: Colors.white)),
               ),
-              
 
               SizedBox(height: 16),
 
@@ -234,10 +232,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     cursorColor: Colors.blueAccent,
                     style: TextStyle(color: Colors.blueAccent),
-                    // Quando o usuário pressiona Enter, adiciona a nova tarefa
                     onSubmitted: (String inputNovaTarefa) {
                       setState(() {
-                        // Adiciona a tarefa ao controlador
                         _taskController.adicionarTarefa(inputNovaTarefa);
                         _controller.clear();
                         clicouNoCampo = false;

@@ -5,6 +5,8 @@ class User {
   final String? fotoUrl;
   final DateTime dateRetister;
   final bool modoOffline;
+  final String senha; 
+  final String confirmarSenha; 
 
   User ({
     required this.id,
@@ -13,5 +15,7 @@ class User {
     this.fotoUrl,
     required this.dateRetister,
     this.modoOffline = false,
+    required this.senha, 
+    required this.confirmarSenha, 
   }); 
 }

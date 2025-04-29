@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         '/change': (context) => changeLogin(),
         '/Login': (context) => Login(),
         '/RegisterUser': (context) => RegisterUserState(),
-        '/kanban': (context) => HomeScreen() 
+        '/kanban': (context) => HomeScreen(), 
       }
       
     );
