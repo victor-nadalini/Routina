@@ -141,6 +141,7 @@ class _RegisterUserStateState extends State<RegisterUserState> {
                       );
                       
                     });
+                    Navigator.pushReplacementNamed(context, '/testeUser');
                   }
                 },
 

@@ -11,7 +11,8 @@ class UsuariosTeste extends StatefulWidget {
 class _UsuariosTesteState extends State<UsuariosTeste> {
   @override
   Widget build(BuildContext context) {
-    final usuarios = UserController.getUser(); // adaptado ao seu controller
+    final userController = UserController();
+    final usuarios = userController.getUser();
 
     return Scaffold(
       backgroundColor: Colors.black,
