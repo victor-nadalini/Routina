@@ -20,7 +20,7 @@ void main() async {
   Hive.init(dir.path);
 
   Hive.registerAdapter(TaskAdapter());
-
+   
   await Hive.openBox('TasksAtivas');
   await Hive.openBox('TasksConcluidas');
 
