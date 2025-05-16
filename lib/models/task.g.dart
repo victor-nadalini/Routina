@@ -20,6 +20,7 @@ class TaskAdapter extends TypeAdapter<Task> {
       id: fields[1] as String,
       titulo: fields[2] as String,
       concluida: fields[3] as bool,
+      
     );
   }
 

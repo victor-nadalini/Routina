@@ -20,6 +20,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
+
+
+
       body: SingleChildScrollView(
         padding: EdgeInsets.all(40),
         child: Container(
@@ -64,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       padding: EdgeInsets.only(right: 20),
                       child: Icon(Icons.delete, color: Colors.white),
                     ),
-
+                    // rodear por um button
                     child: Container(
                       width: 340,
                       height: 73,
@@ -90,8 +93,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             icon: Icon(Icons.radio_button_unchecked),
                           ),
                           Expanded(
-                            child: Text(
-                              tarefa.titulo,
+                            child: TextField(
+                              controller: TextEditingController(text: tarefa.id),
+                              onSubmitted: (updateTarefa) {
+                                setState(() {
+                                  logger.d("update realizado");
+                                  _taskController.updateTaskAtivas(tarefa, updateTarefa);
+                                });
+                              },
+                              
                               style: TextStyle(color: Colors.blueAccent),
                             ),
                           ),
@@ -175,10 +185,17 @@ class _HomeScreenState extends State<HomeScreen> {
                               icon: Icon(Icons.radio_button_unchecked),
                             ),
                             Expanded(
-                              child: Text(
-                                tarefa.titulo,
-                                style: TextStyle(color: Colors.blueAccent),
-                              ),
+                              child: TextField(
+                              controller: TextEditingController(text: tarefa.id),
+                              onSubmitted: (updateTarefa) {
+                                setState(() {
+                                  logger.d("update realizado");
+                                  _taskController.updateTaskConcluida(tarefa, updateTarefa );
+                                });
+                              },
+                              
+                              style: TextStyle(color: Colors.blueAccent),
+                            ),
                             ),
                           ],
                         ),

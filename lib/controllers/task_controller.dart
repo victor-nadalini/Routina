@@ -47,4 +47,12 @@ class TaskController {
     }
   }
 
+  void updateTaskAtivas(id, updateTask) {
+    taskBoxAtivas.putAt(id, updateTask); 
+  }
+
+  void updateTaskConcluida(id, updateTask) {
+    taskBoxAtivas.putAt(id, updateTask);
+  }
+
 }
