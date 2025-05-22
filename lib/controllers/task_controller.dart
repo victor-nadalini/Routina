@@ -6,7 +6,7 @@ class TaskController {
   static Box get taskBoxAtivas => Hive.box('TasksAtivas'); // terei que substituir em teoria apenas as duas listas por tabelhas do hive static Box get taskBoxAtivas => Hive.box('tasks_ativas');
   static Box get taskBoxConcluidas => Hive.box('TasksConcluidas'); //   static Box get taskBoxConcluidas => Hive.box('tasks_concluidas');
   final _uuid = Uuid();
-
+  
   List<Task> get tarefasAtivas {
     return taskBoxAtivas.values.cast<Task>().toList();
   }
@@ -47,12 +47,17 @@ class TaskController {
     }
   }
 
-  void updateTaskAtivas(id, updateTask) {
-    taskBoxAtivas.putAt(id, updateTask); 
-  }
+  void updateTask(int id, String newTitle) {
+       final tarefa = taskBoxAtivas.getAt(id) as Task;
 
-  void updateTaskConcluida(id, updateTask) {
-    taskBoxAtivas.putAt(id, updateTask);
+       final updateTask = Task(
+        id: tarefa.id,
+        titulo: newTitle,
+        concluida: tarefa.concluida,
+        );
+
+      
+      taskBoxAtivas.putAt(id, updateTask);
   }
 
 }

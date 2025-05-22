@@ -19,6 +19,9 @@ void main() async {
   final dir = await getApplicationCacheDirectory();
   Hive.init(dir.path);
 
+  await Hive.deleteBoxFromDisk('TasksAtivas');
+  await Hive.deleteBoxFromDisk('TasksConcluidas');
+
   Hive.registerAdapter(TaskAdapter());
    
   await Hive.openBox('TasksAtivas');

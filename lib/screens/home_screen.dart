@@ -94,13 +94,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           Expanded(
                             child: TextField(
-                              controller: TextEditingController(text: tarefa.id),
-                              onSubmitted: (updateTarefa) {
+                              controller: TextEditingController(text: tarefa.titulo),
+                              onSubmitted: (newTitle) {
                                 setState(() {
                                   logger.d("update realizado");
-                                  _taskController.updateTaskAtivas(tarefa, updateTarefa);
+                                  _taskController.updateTask(index, newTitle);
                                 });
                               },
+
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                              ),
                               
                               style: TextStyle(color: Colors.blueAccent),
                             ),
@@ -186,13 +190,17 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             Expanded(
                               child: TextField(
-                              controller: TextEditingController(text: tarefa.id),
-                              onSubmitted: (updateTarefa) {
+                              controller: TextEditingController(text: tarefa.titulo),
+                              onSubmitted: (newTitle) {
                                 setState(() {
                                   logger.d("update realizado");
-                                  _taskController.updateTaskConcluida(tarefa, updateTarefa );
+                                  _taskController.updateTask(index, newTitle);
                                 });
                               },
+
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                              ),
                               
                               style: TextStyle(color: Colors.blueAccent),
                             ),
