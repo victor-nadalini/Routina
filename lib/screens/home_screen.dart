@@ -98,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               onSubmitted: (newTitle) {
                                 setState(() {
                                   logger.d("update realizado");
-                                  _taskController.updateTask(index, newTitle);
+                                  _taskController.updateTaskAtivas(index, newTitle);
                                 });
                               },
 
@@ -183,6 +183,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: Colors.blueAccent,
                               onPressed: () {
                                 setState(() {
+                                  _taskController.desconcluirTarefa(index);
+                                  mostrarConcluida = true;
                                   logger.d("tarefas ja na lista de conclusão");
                                 });
                               },
@@ -194,7 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               onSubmitted: (newTitle) {
                                 setState(() {
                                   logger.d("update realizado");
-                                  _taskController.updateTask(index, newTitle);
+                                  _taskController.updateTaskConcluidas(index, newTitle);
                                 });
                               },
 
