@@ -86,7 +86,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               setState(() {
                                 _taskController.concluirTarefa(index);
                                 logger.d("cocluir tarefa");
-                                mostrarConcluida = false;
                                 logger.d("mostrar $mostrarConcluida");
                               });
                             },
@@ -184,11 +183,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               onPressed: () {
                                 setState(() {
                                   _taskController.desconcluirTarefa(index);
-                                  mostrarConcluida = true;
                                   logger.d("tarefas ja na lista de conclusão");
                                 });
                               },
-                              icon: Icon(Icons.radio_button_unchecked),
+                              icon: Icon(Icons.check_circle),
                             ),
                             Expanded(
                               child: TextField(
@@ -204,7 +202,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 border: InputBorder.none,
                               ),
                               
-                              style: TextStyle(color: Colors.blueAccent),
+                              style: TextStyle(
+                                color: Colors.blueAccent,
+                                decoration: TextDecoration.lineThrough, 
+                                decorationColor: Colors.blueAccent),
                             ),
                             ),
                           ],

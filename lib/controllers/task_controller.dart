@@ -28,6 +28,7 @@ class TaskController {
     if (index >= 0 && index < taskBoxAtivas.length) {
       final tarefa = taskBoxAtivas.getAt(index);
       if (tarefa != null) {
+        
         final novaTarefa = Task(
           id: tarefa.id,
           titulo: tarefa.titulo,
