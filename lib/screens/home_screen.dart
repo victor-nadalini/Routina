@@ -261,6 +261,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     cursorColor: Colors.blueAccent,
                     style: TextStyle(color: Colors.blueAccent),
                     onSubmitted: (String inputNovaTarefa) {
+                      if (inputNovaTarefa.trim().isEmpty) {
+                        return; 
+                      }
                       setState(() {
                         _taskController.adicionarTarefa(inputNovaTarefa);
                         _controller.clear();
