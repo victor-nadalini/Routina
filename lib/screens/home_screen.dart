@@ -15,6 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _controller = TextEditingController();
   bool clicouNoCampo = false;
   bool mostrarConcluida = false;
+  bool mostrarConcluidaPlanob = false;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
         padding: EdgeInsets.all(40),
+        // permanece a ideia do row mas ainda não funcionou
         child: Container(
           padding: EdgeInsets.all(16),
           child: Column(
@@ -90,18 +92,23 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           Expanded(
                             child: TextField(
-                              controller: TextEditingController(text: tarefa.titulo),
+                              controller: TextEditingController(
+                                text: tarefa.titulo,
+                              ),
                               onSubmitted: (newTitle) {
                                 setState(() {
                                   logger.d("update realizado");
-                                  _taskController.updateTaskAtivas(index, newTitle);
+                                  _taskController.updateTaskAtivas(
+                                    index,
+                                    newTitle,
+                                  );
                                 });
                               },
 
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                               ),
-                              
+
                               style: TextStyle(color: Colors.blueAccent),
                             ),
                           ),
@@ -112,7 +119,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
 
-              TextButton(
+              Row(
+              children: [TextButton(
                 onPressed: () {
                   setState(() {
                     mostrarConcluida = !mostrarConcluida;
@@ -129,8 +137,35 @@ class _HomeScreenState extends State<HomeScreen> {
                           : Icons.keyboard_arrow_down,
                       color: Colors.blueAccent,
                     ),
+
+                    
                   ],
                 ),
+              ),
+
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    mostrarConcluidaPlanob = !mostrarConcluidaPlanob;
+                    logger.d("mostrar concluídas: $mostrarConcluida");
+                  });
+                },
+                child: Row(
+                  children: [
+                    Text("Plano B", style: TextStyle(color: Colors.white)),
+                    SizedBox(width: 1), // Espaço entre texto e imagem
+                    Icon(
+                      mostrarConcluidaPlanob
+                          ? Icons.keyboard_arrow_up
+                          : Icons.keyboard_arrow_down,
+                      color: Colors.blueAccent,
+                    ),
+
+                    
+                  ],
+                ),
+              ),
+              ],
               ),
 
               if (mostrarConcluida)
@@ -187,23 +222,29 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             Expanded(
                               child: TextField(
-                              controller: TextEditingController(text: tarefa.titulo),
-                              onSubmitted: (newTitle) {
-                                setState(() {
-                                  logger.d("update realizado");
-                                  _taskController.updateTaskConcluidas(index, newTitle);
-                                });
-                              },
+                                controller: TextEditingController(
+                                  text: tarefa.titulo,
+                                ),
+                                onSubmitted: (newTitle) {
+                                  setState(() {
+                                    logger.d("update realizado");
+                                    _taskController.updateTaskConcluidas(
+                                      index,
+                                      newTitle,
+                                    );
+                                  });
+                                },
 
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                ),
+
+                                style: TextStyle(
+                                  color: Colors.blueAccent,
+                                  decoration: TextDecoration.lineThrough,
+                                  decorationColor: Colors.blueAccent,
+                                ),
                               ),
-                              
-                              style: TextStyle(
-                                color: Colors.blueAccent,
-                                decoration: TextDecoration.lineThrough, 
-                                decorationColor: Colors.blueAccent),
-                            ),
                             ),
                           ],
                         ),
@@ -226,8 +267,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
 
               SizedBox(height: 16),
-
-              // Campo de texto para adicionar novas tarefas
               Align(
                 alignment: Alignment.bottomCenter,
                 child: SizedBox(
@@ -259,7 +298,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(color: Colors.blueAccent),
                     onSubmitted: (String inputNovaTarefa) {
                       if (inputNovaTarefa.trim().isEmpty) {
-                        return; 
+                        return;
                       }
                       setState(() {
                         _taskController.adicionarTarefa(inputNovaTarefa);
