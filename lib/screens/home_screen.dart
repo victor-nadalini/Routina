@@ -120,7 +120,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
 
               Row(
-              children: [TextButton(
+              children: [
+                TextButton(
                 onPressed: () {
                   setState(() {
                     mostrarConcluida = !mostrarConcluida;
@@ -130,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   children: [
                     Text("Concluídas", style: TextStyle(color: Colors.white)),
-                    SizedBox(width: 1), // Espaço entre texto e imagem
+                    SizedBox(width: 1), 
                     Icon(
                       mostrarConcluida
                           ? Icons.keyboard_arrow_up
@@ -147,13 +148,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () {
                   setState(() {
                     mostrarConcluidaPlanob = !mostrarConcluidaPlanob;
-                    logger.d("mostrar concluídas: $mostrarConcluida");
+                    logger.d("lista do plano b");
                   });
                 },
                 child: Row(
                   children: [
                     Text("Plano B", style: TextStyle(color: Colors.white)),
-                    SizedBox(width: 1), // Espaço entre texto e imagem
+                    SizedBox(width: 1), 
                     Icon(
                       mostrarConcluidaPlanob
                           ? Icons.keyboard_arrow_up
