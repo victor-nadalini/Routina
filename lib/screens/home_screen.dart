@@ -23,7 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
         padding: EdgeInsets.all(40),
-        // permanece a ideia do row mas ainda não funcionou
         child: Container(
           padding: EdgeInsets.all(16),
           child: Column(
@@ -31,14 +30,15 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
+              // adicionar um subtexto com data e hora de baixo de routina
               Align(
-                alignment: Alignment.topCenter,
+                alignment: Alignment.topLeft,
                 child: Text(
-                  "SE MEU DIA",
+                  "Routina",
                   style: TextStyle(color: Colors.blueAccent, fontSize: 30),
                 ),
               ),
-              SizedBox(height: 66),
+              SizedBox(height: 16),
 
               ListView.builder(
                 shrinkWrap: true,
