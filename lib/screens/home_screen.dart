@@ -32,12 +32,23 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               // adicionar um subtexto com data e hora de baixo de routina
               Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  "Routina",
-                  style: TextStyle(color: Colors.blueAccent, fontSize: 30),
+                alignment: Alignment.centerLeft,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Routina",
+                      style: TextStyle(color: Colors.blueAccent, fontSize: 30),
+                    ),
+                    Text(
+                      "Quinta-feira, 29 de maio", // adicionar a data em tempo real
+                      style: TextStyle(color: Colors.blueAccent),
+                    ),
+                  ],
                 ),
               ),
+
               SizedBox(height: 16),
 
               ListView.builder(
@@ -120,53 +131,52 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
 
               Row(
-              children: [
-                TextButton(
-                onPressed: () {
-                  setState(() {
-                    mostrarConcluida = !mostrarConcluida;
-                    logger.d("mostrar concluídas: $mostrarConcluida");
-                  });
-                },
-                child: Row(
-                  children: [
-                    Text("Concluídas", style: TextStyle(color: Colors.white)),
-                    SizedBox(width: 1), 
-                    Icon(
-                      mostrarConcluida
-                          ? Icons.keyboard_arrow_up
-                          : Icons.keyboard_arrow_down,
-                      color: Colors.blueAccent,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        mostrarConcluida = !mostrarConcluida;
+                        logger.d("mostrar concluídas: $mostrarConcluida");
+                      });
+                    },
+                    child: Row(
+                      children: [
+                        Text(
+                          "Concluídas",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        SizedBox(width: 1),
+                        Icon(
+                          mostrarConcluida
+                              ? Icons.keyboard_arrow_up
+                              : Icons.keyboard_arrow_down,
+                          color: Colors.blueAccent,
+                        ),
+                      ],
                     ),
+                  ),
 
-                    
-                  ],
-                ),
-              ),
-
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    mostrarConcluidaPlanob = !mostrarConcluidaPlanob;
-                    logger.d("lista do plano b");
-                  });
-                },
-                child: Row(
-                  children: [
-                    Text("Plano B", style: TextStyle(color: Colors.white)),
-                    SizedBox(width: 1), 
-                    Icon(
-                      mostrarConcluidaPlanob
-                          ? Icons.keyboard_arrow_up
-                          : Icons.keyboard_arrow_down,
-                      color: Colors.blueAccent,
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        mostrarConcluidaPlanob = !mostrarConcluidaPlanob;
+                        logger.d("lista do plano b");
+                      });
+                    },
+                    child: Row(
+                      children: [
+                        Text("Plano B", style: TextStyle(color: Colors.white)),
+                        SizedBox(width: 1),
+                        Icon(
+                          mostrarConcluidaPlanob
+                              ? Icons.keyboard_arrow_up
+                              : Icons.keyboard_arrow_down,
+                          color: Colors.blueAccent,
+                        ),
+                      ],
                     ),
-
-                    
-                  ],
-                ),
-              ),
-              ],
+                  ),
+                ],
               ),
 
               if (mostrarConcluida)
