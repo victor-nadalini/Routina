@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:routina/controllers/task_controller.dart';
+import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,6 +17,13 @@ class _HomeScreenState extends State<HomeScreen> {
   bool clicouNoCampo = false;
   bool mostrarConcluida = false;
   bool mostrarConcluidaPlanob = false;
+  var date = DateTime.now();
+  var dateFormat = DateFormat(); //parei aqui
+  
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyle(color: Colors.blueAccent, fontSize: 30),
                     ),
                     Text(
-                      "Quinta-feira, 29 de maio", // adicionar a data em tempo real
+                      date.year.toString(), // adicionar a data em tempo real
                       style: TextStyle(color: Colors.blueAccent),
                     ),
                   ],
