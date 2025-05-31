@@ -9,10 +9,12 @@ import 'screens/register.dart';
 import 'screens/usuario_teste.dart';
 import 'package:logger/logger.dart';
 import 'models/task.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
 
 void main() async {
-  try {
-  runApp(const MyApp());
+  try {   
+  initializeDateFormatting('pt_BR', null).then((_) => runApp(const MyApp()));
 
 
   WidgetsFlutterBinding.ensureInitialized();

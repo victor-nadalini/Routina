@@ -3,6 +3,8 @@ import 'package:logger/logger.dart';
 import 'package:routina/controllers/task_controller.dart';
 import 'package:intl/intl.dart';
 
+
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -17,8 +19,10 @@ class _HomeScreenState extends State<HomeScreen> {
   bool clicouNoCampo = false;
   bool mostrarConcluida = false;
   bool mostrarConcluidaPlanob = false;
-  var date = DateTime.now();
-  var dateFormat = DateFormat(); //parei aqui
+  DateTime date = DateTime.now();
+  
+  late String dateFormat = DateFormat('EEE, dd MMM yyyy', 'pt_BR',).format(date); //parei aqui
+  
   
   @override
   void initState() {
@@ -50,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyle(color: Colors.blueAccent, fontSize: 30),
                     ),
                     Text(
-                      date.year.toString(), // adicionar a data em tempo real
+                      dateFormat, // adicionar a data em tempo real
                       style: TextStyle(color: Colors.blueAccent),
                     ),
                   ],
@@ -292,7 +296,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 33,
                   width: 251,
                   child: TextField(
-                    textAlign: TextAlign.start,
+                    textAlign: TextAlign.left,
                     controller: _controller,
                     onTap: () {
                       setState(() {
@@ -301,11 +305,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       });
                     },
                     decoration: InputDecoration(
+                      prefixIcon: Padding(
+                        padding: EdgeInsets.only(left: 0),
+                        child: Icon(Icons.radio_button_unchecked, color: Colors.blueAccent, size: 20, ),
+                      ),
                       border: OutlineInputBorder(),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.blueAccent),
                       ),
-                      contentPadding: EdgeInsets.only(left: 12),
+                      contentPadding: EdgeInsets.only(left: 0),
                       hintText: clicouNoCampo ? '' : "Digite nova tarefa?",
                       hintStyle: TextStyle(color: Colors.blueAccent),
                       fillColor: Colors.black,
