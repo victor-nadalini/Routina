@@ -48,18 +48,34 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       drawer: Drawer(
+        backgroundColor: Colors.black,
         child: ListView(
+          
           padding: EdgeInsets.zero,
           children: [
             const DrawerHeader(
               decoration: BoxDecoration(color: Colors.black),
-              child: Text("Menu"),
+              child: Text("Victor Nadalini", style: TextStyle(color: Colors.blueAccent),),
             ),
-
             ListTile(
-              title: const Text("configurações"),
+              title: const Text("Configurações"),
+              textColor: Colors.blueAccent,
               onTap: () {
                 Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text("Perfil"),
+              textColor: Colors.blueAccent,
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text("Login"),
+              textColor: Colors.blueAccent,
+              onTap: () {
+                Navigator.pushReplacementNamed(context, '/change');
               },
             ),
           ],
@@ -315,13 +331,12 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomSheet: Container(
         color: Colors.black,
         child: Padding(
-          padding: EdgeInsets.only(bottom: 30),
+          padding: EdgeInsets.only(bottom: 60),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/change');
                   logger.d("gera lista de plano b");
                 },
                 style: ElevatedButton.styleFrom(

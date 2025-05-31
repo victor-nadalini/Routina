@@ -93,4 +93,8 @@ class TaskController {
 
     taskBoxConcluidas.putAt(id, updateTask);
   }
+
+  void planoB() {
+    
+  }
 }
