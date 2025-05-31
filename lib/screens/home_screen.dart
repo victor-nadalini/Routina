@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (context) {
             return IconButton(
               color: Colors.blueAccent,
-              icon: const Icon(Icons.menu, size: 25,),
+              icon: const Icon(Icons.menu, size: 25),
               onPressed: () {
                 Scaffold.of(context).openDrawer();
               },
@@ -56,9 +56,12 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text("Menu"),
             ),
 
-            ListTile(title: const Text("configurações"), onTap: () {
-               Navigator.pop(context);
-            }),
+            ListTile(
+              title: const Text("configurações"),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
           ],
         ),
       ),
@@ -111,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         SnackBar(content: Text("Tarefa removida")),
                       );
                     },
-                  
+
                     background: Container(
                       color: Colors.red,
                       alignment: Alignment.centerRight,
@@ -169,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
               ),
-              
+
               Row(
                 children: [
                   TextButton(
@@ -303,84 +306,88 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     );
                   },
-                ),              
+                ),
             ],
-            ),
           ),
         ),
-        bottomNavigationBar: Padding(
-          padding: EdgeInsets.all(60),
-        child: Column(
-           mainAxisSize: MainAxisSize.min,
-                children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/change');
-                    logger.d("gera lista de plano b");
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blueAccent,
-                  ),
-                  child: Text("PLANO B", style: TextStyle(color: Colors.white)),
+      ),
+      resizeToAvoidBottomInset: true,
+      bottomSheet: Container(
+        color: Colors.black,
+        child: Padding(
+          padding: EdgeInsets.only(bottom: 30),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, '/change');
+                  logger.d("gera lista de plano b");
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blueAccent,
                 ),
+                child: Text("PLANO B", style: TextStyle(color: Colors.white)),
+              ),
 
-                SizedBox(height: 16),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: SizedBox(
-                    height: 33,
-                    width: 251,
-                    child: TextField(
-                      textAlign: TextAlign.left,
-                      controller: _controller,
-                      onTap: () {
-                        setState(() {
-                          logger.d("input limbo digite");
-                          clicouNoCampo = true;
-                        });
-                      },
-                      decoration: InputDecoration(
-                        prefixIcon: Padding(
-                          padding: EdgeInsets.only(left: 0),
-                          child: Icon(
-                            Icons.radio_button_unchecked,
-                            color: Colors.blueAccent,
-                            size: 20,
-                          ),
-                        ),
-                        border: OutlineInputBorder(),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blueAccent),
-                        ),
-                        contentPadding: EdgeInsets.only(left: 0),
-                        hintText: clicouNoCampo ? '' : "Digite nova tarefa?",
-                        hintStyle: TextStyle(color: Colors.blueAccent),
-                        fillColor: Colors.black,
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blueAccent),
+              SizedBox(height: 16),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: SizedBox(
+                  height: 33,
+                  width: 251,
+                  child: TextField(
+                    textAlign: TextAlign.left,
+                    controller: _controller,
+                    onTap: () {
+                      setState(() {
+                        logger.d("input limbo digite");
+                        clicouNoCampo = true;
+                      });
+                    },
+                    decoration: InputDecoration(
+                      prefixIcon: Padding(
+                        padding: EdgeInsets.only(left: 0),
+                        child: Icon(
+                          Icons.radio_button_unchecked,
+                          color: Colors.blueAccent,
+                          size: 20,
                         ),
                       ),
-                      cursorColor: Colors.blueAccent,
-                      style: TextStyle(color: Colors.blueAccent),
-                      onSubmitted: (String inputNovaTarefa) {
-                        if (inputNovaTarefa.trim().isEmpty) {
-                          return;
-                        }
-                        setState(() {
-                          _taskController.adicionarTarefa(inputNovaTarefa);
-                          _controller.clear();
-                          clicouNoCampo = false;
-                        });
-                        logger.d(
-                          "tarefa adicionada com sucesso $inputNovaTarefa",
-                        );
-                      },
+                      border: OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blueAccent),
+                      ),
+                      contentPadding: EdgeInsets.only(left: 0),
+                      hintText: clicouNoCampo ? '' : "Digite nova tarefa?",
+                      hintStyle: TextStyle(color: Colors.blueAccent),
+                      fillColor: Colors.black,
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blueAccent),
+                      ),
                     ),
+                    cursorColor: Colors.blueAccent,
+                    style: TextStyle(color: Colors.blueAccent),
+                    onSubmitted: (String inputNovaTarefa) {
+                      if (inputNovaTarefa.trim().isEmpty) {
+                        return;
+                      }
+                      setState(() {
+                        _taskController.adicionarTarefa(inputNovaTarefa);
+                        _controller.clear();
+                        clicouNoCampo = false;
+                      });
+                      logger.d(
+                        "tarefa adicionada com sucesso $inputNovaTarefa",
+                      );
+                    },
                   ),
                 ),
-                ],
               ),
+            ],
+          ),
         ),
+      ),
     );
   }
 }
