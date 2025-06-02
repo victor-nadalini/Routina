@@ -95,6 +95,10 @@ class TaskController {
   }
 
   void planoB() {
-    
+    // fazer a conexão com a api do gemini
+    // pegar o titulo da tarefa
+    // enviar para o gemini
+    // receber a resposta
+    // adicionar a resposta na lista de tarefas Plano B
   }
 }

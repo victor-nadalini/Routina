@@ -24,6 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
     'pt_BR',
   ).format(date); //parei aqui
 
+  final double _bottomSheetHeight = 60.0 + 16.0 + 33.0 + 60.0;
+
   @override
   void initState() {
     super.initState();
@@ -50,12 +52,14 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: Drawer(
         backgroundColor: Colors.black,
         child: ListView(
-          
           padding: EdgeInsets.zero,
           children: [
             const DrawerHeader(
               decoration: BoxDecoration(color: Colors.black),
-              child: Text("Victor Nadalini", style: TextStyle(color: Colors.blueAccent),),
+              child: Text(
+                "Victor Nadalini",
+                style: TextStyle(color: Colors.blueAccent),
+              ),
             ),
             ListTile(
               title: const Text("Configurações"),
@@ -84,7 +88,12 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SingleChildScrollView(
         //padding: EdgeInsets.all(40),
         child: Container(
-          padding: EdgeInsets.all(16),
+          padding: EdgeInsets.only(
+          left: 16,
+          right: 16,
+          top: 16,
+          bottom: _bottomSheetHeight + 16,
+        ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
