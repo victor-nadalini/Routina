@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final double _bottomSheetHeight = 60.0 + 16.0 + 33.0 + 60.0;
 
-  void _showPlanBPresentationDialog(String planoBContent) {
+  void _showPlanBPresentationDialog(String planoBContent) { // somente durante o desenvolvimento
   showDialog(
     context: context, // 'context' está disponível dentro do State
     builder: (BuildContext context) {
@@ -404,7 +404,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   backgroundColor: Colors.blueAccent,
                 ),
                         child: planBController.isLoading
-                        ? const CircularProgressIndicator(color: Colors.white)
+                        ? const CircularProgressIndicator(color: Colors.blueAccent)
                         : const Text("PLANO B", style: TextStyle(color: Colors.white)),
               ),
 

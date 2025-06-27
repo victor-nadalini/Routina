@@ -30,7 +30,6 @@ class GptAll4Service {
     }
   }
 
-// em observação 
   String _buildFullPrompt(List<String> tasks) {
     String tasksList = tasks
         .map((task) => '"$task"')

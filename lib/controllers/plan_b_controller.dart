@@ -6,10 +6,12 @@ class PlanBController extends ChangeNotifier {
   final GptAll4Service _service = GptAll4Service();
   final logger = Logger();
 
+  // values to be observed 
   String? _generatedPlanoBs; 
   bool _isLoading = false; 
   String? _errorMesage;
 
+  // Getters for get elements for work to UI 
   String? get ganeratedPlanoBs => _generatedPlanoBs;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMesage;
