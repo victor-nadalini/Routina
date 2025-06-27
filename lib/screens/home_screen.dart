@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:routina/controllers/task_controller.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart';// ignore: unused_import
+import 'package:routina/controllers/plan_b_controller.dart';
+import 'package:provider/provider.dart';
+import 'package:routina/models/task.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,21 +21,51 @@ class _HomeScreenState extends State<HomeScreen> {
   bool mostrarConcluida = false;
   bool mostrarConcluidaPlanob = false;
   DateTime date = DateTime.now();
-
   late String dateFormat = DateFormat(
     'EEE, dd MMM yyyy',
     'pt_BR',
-  ).format(date); //parei aqui
+  ).format(date);
+  
 
   final double _bottomSheetHeight = 60.0 + 16.0 + 33.0 + 60.0;
 
+  void _showPlanBPresentationDialog(String planoBContent) {
+  showDialog(
+    context: context, // 'context' está disponível dentro do State
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Seu Plano B:'), // Título do pop-up
+        content: SingleChildScrollView(
+          // Permite rolagem se o texto do plano B for muito longo
+          child: Text(
+            planoBContent, // Conteúdo do plano B que você passou
+            style: const TextStyle(fontSize: 16),
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Entendi'), // Botão para fechar o pop-up
+            onPressed: () {
+              Navigator.of(context).pop(); // Fecha o pop-up
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
   @override
+  
   void initState() {
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+        
+    final planBController = Provider.of<PlanBController>(context);
+    
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -89,11 +122,11 @@ class _HomeScreenState extends State<HomeScreen> {
         //padding: EdgeInsets.all(40),
         child: Container(
           padding: EdgeInsets.only(
-          left: 16,
-          right: 16,
-          top: 16,
-          bottom: _bottomSheetHeight + 16,
-        ),
+            left: 16,
+            right: 16,
+            top: 16,
+            bottom: _bottomSheetHeight + 16,
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -345,14 +378,44 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ElevatedButton(
-                onPressed: () {
-                  logger.d("gera lista de plano b");
-                },
+                onPressed: planBController.isLoading ? null : () async {
+                  final List<Task> titulos = TaskController().tarefasAtivas; 
+                  final List<String> tarefasEnviar = titulos.map((task) => task.titulo).toList();
+
+                          if (tarefasEnviar.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  "Adicione tarefas antes de gerar o Plano B.",
+                                ),
+                              ),
+                            );
+                            return;
+                          }
+                         await planBController.gerarPlanoB(tarefasEnviar);
+
+                         if (planBController.ganeratedPlanoBs != null) {
+                          _showPlanBPresentationDialog(planBController.ganeratedPlanoBs!); // so em desenvolvimento 
+                         }
+                        }, 
+                        
+
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blueAccent,
                 ),
-                child: Text("PLANO B", style: TextStyle(color: Colors.white)),
+                        child: planBController.isLoading
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : const Text("PLANO B", style: TextStyle(color: Colors.white)),
               ),
+
+              if (planBController.errorMessage != null && !planBController.isLoading) // so em desenvolvimento
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                'Erro: ${planBController.errorMessage!}',
+                style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+              ),
+            ),
 
               SizedBox(height: 16),
               Align(

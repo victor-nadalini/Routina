@@ -29,7 +29,7 @@ class _changeLogin extends State<changeLogin> {
             onPressed:
                 () => setState(() {
                   Navigator.pushReplacementNamed(context, '/kanban');
-                  logger.d("teste botão continuar sem login");
+                  logger.d("ENTRAR NO APP");
                 }),
             style: ElevatedButton.styleFrom(
               minimumSize: Size(340, 73),
@@ -40,29 +40,7 @@ class _changeLogin extends State<changeLogin> {
               ),
             ),
             child: Text(
-              "Continuar sem login",
-              style: TextStyle(color: Colors.blueAccent),
-            ),
-          ),
-
-          SizedBox(height: 20),
-
-          ElevatedButton(
-            onPressed:
-                () => setState(() {
-                  Navigator.pushReplacementNamed(context, '/Login');
-                  logger.d("fazer login no app");
-                }),
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size(340, 73),
-              backgroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
-                side: BorderSide(color: Colors.blueAccent),
-              ),
-            ),
-            child: Text(
-              "Login / Criar conta",
+              "Entrar",
               style: TextStyle(color: Colors.blueAccent),
             ),
           ),
