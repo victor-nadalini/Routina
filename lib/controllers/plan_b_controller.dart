@@ -31,6 +31,7 @@ class PlanBController extends ChangeNotifier {
 
       String resultado = await _service.getGpt4allResponse(tarefasEnviar);
       _generatedPlanoBs = resultado; 
+      
     } catch (e) {
     _errorMesage = "Erro ao criar plano b $e.toString()";
     logger.d("erro ao criar plano b");

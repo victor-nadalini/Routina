@@ -230,14 +230,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
               ),
-
-              Row(
+              Row( 
                 children: [
                   TextButton(
                     onPressed: () {
                       setState(() {
+                        if (mostrarConcluidaPlanob == false) {
                         mostrarConcluida = !mostrarConcluida;
                         logger.d("mostrar concluídas: $mostrarConcluida");
+                        }
                       });
                     },
                     child: Row(
@@ -254,15 +255,17 @@ class _HomeScreenState extends State<HomeScreen> {
                               : Icons.keyboard_arrow_down,
                           color: Colors.blueAccent,
                         ),
-                      ],
+                      ]
                     ),
                   ),
 
                   TextButton(
                     onPressed: () {
                       setState(() {
+                        if (mostrarConcluida == false) {
                         mostrarConcluidaPlanob = !mostrarConcluidaPlanob;
                         logger.d("lista do plano b");
+                        }
                       });
                     },
                     child: Row(
