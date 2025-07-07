@@ -245,7 +245,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Text(
                           "Concluídas",
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.blueAccent),
                         ),
 
                         SizedBox(width: 1),
@@ -270,7 +270,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     child: Row(
                       children: [
-                        Text("Plano B", style: TextStyle(color: Colors.white)),
+                        Text("Plano B", style: TextStyle(color: Colors.blueAccent)),
                         SizedBox(width: 1),
                         Icon(
                           mostrarConcluidaPlanob
@@ -408,7 +408,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                         child: planBController.isLoading
                         ? const CircularProgressIndicator(color: Colors.blueAccent)
-                        : const Text("PLANO B", style: TextStyle(color: Colors.white)),
+                        : const Text("PLANO B", style: TextStyle(color: Colors.black, fontSize: 15)),
               ),
 
               if (planBController.errorMessage != null && !planBController.isLoading) // so em desenvolvimento

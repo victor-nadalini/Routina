@@ -15,6 +15,22 @@ class PlanBController extends ChangeNotifier {
   String? get ganeratedPlanoBs => _generatedPlanoBs;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMesage;
+
+  List<String> extrairTarefasDoPlanoB(String planoB) {
+    final regex = RegExp(r'^\s*\d+\.\s*(.+)$', multiLine: true);
+
+    final Iterable<RegExpMatch> correspondencias = regex.allMatches(planoB);
+
+    if (correspondencias.isEmpty) {
+      logger.d("nenhuma linha com indice foi encontrada nesse texto");
+    }
+
+    logger.d("conteudo das linhas:");
+    for (final Match match in correspondencias) {
+      logger.d(match.group(1));
+    }
+    return correspondencias.map((match) => match.group(1)!).toList(); 
+  }
   
   Future<void> gerarPlanoB(List <String> tarefasEnviar) async {
     _isLoading = true; 
@@ -30,7 +46,9 @@ class PlanBController extends ChangeNotifier {
       }
 
       String resultado = await _service.getGpt4allResponse(tarefasEnviar);
-      _generatedPlanoBs = resultado; 
+      _generatedPlanoBs = extrairTarefasDoPlanoB(resultado).join("\n"); 
+      
+
       
     } catch (e) {
     _errorMesage = "Erro ao criar plano b $e.toString()";
