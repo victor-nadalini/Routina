@@ -1,10 +1,22 @@
 import 'package:routina/services/gpt4all_service.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter/foundation.dart';
+import 'package:hive/hive.dart';
+import 'package:uuid/uuid.dart';
 
 class PlanBController extends ChangeNotifier {
   final GptAll4Service _service = GptAll4Service();
   final logger = Logger();
+  // ignore: unused_field
+  final _uuid = Uuid();
+
+  static Box get planosB => Hive.box(
+    'PlanosB'
+  );
+
+  //List<PlanB> get planosB {
+   // return planosB.values.cast<PlanB>().toList();
+  //}
 
   // values to be observed 
   String? _generatedPlanoBs; 
@@ -58,4 +70,5 @@ class PlanBController extends ChangeNotifier {
       notifyListeners(); 
     }
   }
+
 }

@@ -5,10 +5,11 @@ import 'package:hive/hive.dart';
 class TaskController {
   static Box get taskBoxAtivas => Hive.box(
     'TasksAtivas',
-  ); // terei que substituir em teoria apenas as duas listas por tabelhas do hive static Box get taskBoxAtivas => Hive.box('tasks_ativas');
+  ); 
   static Box get taskBoxConcluidas => Hive.box(
     'TasksConcluidas',
-  ); //   static Box get taskBoxConcluidas => Hive.box('tasks_concluidas');
+  ); 
+  
   final _uuid = Uuid();
 
   List<Task> get tarefasAtivas {

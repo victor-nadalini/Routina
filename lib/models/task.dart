@@ -20,3 +20,4 @@ class Task extends HiveObject {
     this.concluida = false
      });
 }
+      
