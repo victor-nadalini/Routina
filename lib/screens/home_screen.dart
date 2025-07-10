@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _controller = TextEditingController();
   bool clicouNoCampo = false;
   bool mostrarConcluida = false;
-  bool mostrarConcluidaPlanob = false;
+  bool mostrarPlanob = false;
   DateTime date = DateTime.now();
   late String dateFormat = DateFormat(
     'EEE, dd MMM yyyy',
@@ -235,7 +235,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   TextButton(
                     onPressed: () {
                       setState(() {
-                        if (mostrarConcluidaPlanob == false) {
+                        if (mostrarPlanob == false) {
                         mostrarConcluida = !mostrarConcluida;
                         logger.d("mostrar concluídas: $mostrarConcluida");
                         }
@@ -263,7 +263,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onPressed: () {
                       setState(() {
                         if (mostrarConcluida == false) {
-                        mostrarConcluidaPlanob = !mostrarConcluidaPlanob;
+                        mostrarPlanob = !mostrarPlanob;
                         logger.d("lista do plano b");
                         }
                       });
@@ -273,7 +273,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Text("Plano B", style: TextStyle(color: Colors.blueAccent)),
                         SizedBox(width: 1),
                         Icon(
-                          mostrarConcluidaPlanob
+                          mostrarPlanob
                               ? Icons.keyboard_arrow_up
                               : Icons.keyboard_arrow_down,
                           color: Colors.blueAccent,
@@ -368,6 +368,90 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   },
                 ),
+              if (mostrarPlanob)
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: planBController.planosB.length,
+                  itemBuilder: (context, index) {
+                    var tarefa = planBController.planosB[index];
+                    return Dismissible(
+                      key: Key(
+                        tarefa.id,
+                      ), // adicionar tarefa.id.tarefasConcluidas
+                      direction: DismissDirection.endToStart,
+                      onDismissed: (direction) {
+                        setState(() {
+                          //_taskController.deleteTaskConcluidas(index);
+                          //logger.d("deletada tarefa $index");
+                        });
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Tarefa removida")),
+                        );
+                      },
+
+                      background: Container(
+                        color: Colors.red,
+                        alignment: Alignment.centerRight,
+                        padding: EdgeInsets.only(right: 20),
+                        child: Icon(Icons.delete, color: Colors.white),
+                      ),
+
+                      child: Container(
+                        width: 340,
+                        height: 73,
+                        margin: EdgeInsets.only(bottom: 11),
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.blueAccent),
+                        ),
+                        padding: EdgeInsets.all(11),
+                        child: Row(
+                          children: [
+                            IconButton(
+                              color: Colors.blueAccent,
+                              onPressed: () {
+                                setState(() {
+                                 // _taskController.desconcluirTarefa(index);
+                                 // logger.d("tarefas ja na lista de conclusão");
+                                });
+                              },
+                              icon: Icon(Icons.check_circle),
+                            ),
+                            Expanded(
+                              child: TextField(
+                                controller: TextEditingController(
+                                  text: tarefa.titulo,
+                                ),
+                                onSubmitted: (newTitle) {
+                                  setState(() {
+                                  //  logger.d("update realizado");
+                                  //  _taskController.updateTaskConcluidas(
+                                  //    index,
+                                  //    newTitle,
+                                 //   );
+                                  });
+                                },
+
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                ),
+
+                                style: TextStyle(
+                                  color: Colors.blueAccent,
+                                  decoration: TextDecoration.lineThrough,
+                                  decorationColor: Colors.blueAccent,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
             ],
           ),
         ),
@@ -396,11 +480,17 @@ class _HomeScreenState extends State<HomeScreen> {
                             return;
                           }
                          await planBController.gerarPlanoB(tarefasEnviar);
-
+                         
                          if (planBController.ganeratedPlanoBs != null) {
-                          _showPlanBPresentationDialog(planBController.ganeratedPlanoBs!); // so em desenvolvimento 
+                          _showPlanBPresentationDialog(planBController.ganeratedPlanoBs!); // so em desenvolvimento
                          }
-                        }, 
+                         //acho que esta faltando adicionar a função create ao botão mas não estou encontrando como
+                         setState(() {
+                          planBController.createPlanB(planBController.ganeratedPlanoBs as List<String>);
+
+                          logger.d("assim que função create plan é acionada: $_generatedPlanoBs"); // essa é a ideia
+                         });
+                        },
                         
 
                 style: ElevatedButton.styleFrom(

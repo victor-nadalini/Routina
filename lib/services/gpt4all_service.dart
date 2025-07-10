@@ -1,8 +1,12 @@
 import 'dart:convert';
 import "package:http/http.dart" as http;
 import 'dart:async';
+import 'package:logger/logger.dart';
 
 class GptAll4Service {
+
+  final Logger logger = Logger();
+
   Future<String> getGpt4allResponse(List<String> tarefasEnviar) async {
     final prompt = _buildFullPrompt(tarefasEnviar);
     final response = await http.post(
@@ -31,9 +35,12 @@ class GptAll4Service {
   }
 
   String _buildFullPrompt(List<String> tasks) {
-    String tasksList = tasks
+    logger.d("recolhando informações de $tasks");
+    String tasksList = tasks // exatamente aqui é convertido para string, aqui esta o problema de capturar os ids separados
         .map((task) => '"$task"')
         .join('\n');
+        logger.d("recolhando informações de tasklist $tasksList");
+
 
     return """
 **Instrução:**

@@ -1,8 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:routina/services/gpt4all_service.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
+import 'package:routina/models/planb.dart';
 
 class PlanBController extends ChangeNotifier {
   final GptAll4Service _service = GptAll4Service();
@@ -10,13 +12,13 @@ class PlanBController extends ChangeNotifier {
   // ignore: unused_field
   final _uuid = Uuid();
 
-  static Box get planosB => Hive.box(
+  static Box get planosb => Hive.box(
     'PlanosB'
   );
 
-  //List<PlanB> get planosB {
-   // return planosB.values.cast<PlanB>().toList();
-  //}
+  List<Planb> get planosB {
+    return planosb.values.cast<Planb>().toList();
+  }
 
   // values to be observed 
   String? _generatedPlanoBs; 
@@ -41,14 +43,14 @@ class PlanBController extends ChangeNotifier {
     for (final Match match in correspondencias) {
       logger.d(match.group(1));
     }
-    return correspondencias.map((match) => match.group(1)!).toList(); 
+    return correspondencias.map((match) => match.group(1)!).toList();
   }
   
   Future<void> gerarPlanoB(List <String> tarefasEnviar) async {
-    _isLoading = true; 
-    _errorMesage = null; 
-    _generatedPlanoBs = null; 
-    notifyListeners(); 
+    _isLoading = true;
+    _errorMesage = null;
+    _generatedPlanoBs = null;
+    notifyListeners();
     
     try {
       if (tarefasEnviar.isEmpty) {
@@ -59,8 +61,8 @@ class PlanBController extends ChangeNotifier {
 
       String resultado = await _service.getGpt4allResponse(tarefasEnviar);
       _generatedPlanoBs = extrairTarefasDoPlanoB(resultado).join("\n"); 
-      
-
+      logger.d("informaçoes sobre plano b gerado $_generatedPlanoBs");
+      logger.d("informações na tabela $planosB");
       
     } catch (e) {
     _errorMesage = "Erro ao criar plano b $e.toString()";
@@ -70,5 +72,15 @@ class PlanBController extends ChangeNotifier {
       notifyListeners(); 
     }
   }
-
+  void createPlanB(List<String> generatedPlanoBs) {
+    for (int p = 0; p <= generatedPlanoBs.length; ) {
+      String planoBgerado = generatedPlanoBs[p];
+    Planb planb = Planb(
+      id: _uuid.v4(),
+      titulo: planoBgerado
+      );
+    planosB.add(planb);
+    break;
+    }
+  }
 }

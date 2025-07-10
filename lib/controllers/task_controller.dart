@@ -1,8 +1,12 @@
 import 'package:routina/models/task.dart';
 import 'package:uuid/uuid.dart';
 import 'package:hive/hive.dart';
+import 'package:logger/logger.dart';
 
 class TaskController {
+
+  final Logger logger = Logger();
+
   static Box get taskBoxAtivas => Hive.box(
     'TasksAtivas',
   ); 
