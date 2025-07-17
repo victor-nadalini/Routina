@@ -375,6 +375,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemCount: planBController.planosB.length,
                   itemBuilder: (context, index) {
                     var tarefa = planBController.planosB[index];
+                    logger.d("o que tem um plano b controler");
                     return Dismissible(
                       key: Key(
                         tarefa.id,
@@ -483,13 +484,9 @@ class _HomeScreenState extends State<HomeScreen> {
                          
                          if (planBController.ganeratedPlanoBs != null) {
                           _showPlanBPresentationDialog(planBController.ganeratedPlanoBs!); // so em desenvolvimento
+                         } else {
+                          logger.d("nada no generate");
                          }
-                         //acho que esta faltando adicionar a função create ao botão mas não estou encontrando como
-                         setState(() {
-                          planBController.createPlanB(planBController.ganeratedPlanoBs as List<String>);
-
-                          logger.d("assim que função create plan é acionada: $_generatedPlanoBs"); // essa é a ideia
-                         });
                         },
                         
 

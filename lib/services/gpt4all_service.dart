@@ -1,4 +1,5 @@
 import 'dart:convert';
+// import 'package:flutter/foundation.dart';
 import "package:http/http.dart" as http;
 import 'dart:async';
 import 'package:logger/logger.dart';
@@ -36,7 +37,7 @@ class GptAll4Service {
 
   String _buildFullPrompt(List<String> tasks) {
     logger.d("recolhando informações de $tasks");
-    String tasksList = tasks // exatamente aqui é convertido para string, aqui esta o problema de capturar os ids separados
+    String tasksList = tasks 
         .map((task) => '"$task"')
         .join('\n');
         logger.d("recolhando informações de tasklist $tasksList");
