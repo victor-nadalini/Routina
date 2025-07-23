@@ -59,21 +59,25 @@ class PlanBController extends ChangeNotifier {
 
       String resultado = await _service.getGpt4allResponse(tarefasEnviar);
       List<String>? generatedPlanoBs = extrairTarefasDoPlanoB(resultado) as List<String>?;
+      logger.d("RESPOSTA BRUTA DA IA RECEBIDA:\n$resultado"); 
       logger.d("informaçoes sobre plano b gerado $generatedPlanoBs");
       logger.d("plano 1 ${generatedPlanoBs?[0]} plano 2 ${generatedPlanoBs?[1]} plano 3 ${generatedPlanoBs?[2]}");
 
 
-      for (int p = 0; p < generatedPlanoBs!.length; p++) {
         
-        logger.d("loop de genrate esta mostrando o que $generatedPlanoBs"); // entra aqui como valor list
-        String planoBgerado = generatedPlanoBs[p]; // o problema esta exatamente aqui, acho que por p ser um int deve ter algum problema passando por generete plans b a saida de é somente um t
-        logger.d("o que esta mostrando no plano b gerado com generate ${planoBgerado[p]}"); // saida: o que esta mostrando no plano b gerado com generate t
-        Planb planb = Planb(id: _uuid.v4(), titulo: planoBgerado);
-        logger.d("esta sendo criando plan b $planb");
-        planosB.add(planb);
-        logger.d("a tabela é atualizada ? $planosB");
+        logger.d("loop de genrate esta mostrando o que $generatedPlanoBs"); 
 
-      }
+        for (String titulo in generatedPlanoBs!) {
+        Planb planb = Planb(id: _uuid.v4(), titulo: titulo);
+        logger.d("o que tem no titulo plano b gerado $titulo");
+        planosb.add(planb);
+        }
+        
+      logger.d("a tabela é atualizada ? ${planosb.values.toList()}");
+
+      logger.d("a tabela é atualizada ? Número de itens: ${planosb.length}");
+
+      logger.d("a tabela é atualizada ? Conteúdo completo: ${planosb.toMap()}"); // os dados estão sendo criados corretamente agora o erro deve estar na logica de passar os dados para minha screem
 
       logger.d("tem alguma na tabela planos b $planosB");
       

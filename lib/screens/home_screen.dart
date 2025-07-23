@@ -375,7 +375,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemCount: planBController.planosB.length,
                   itemBuilder: (context, index) {
                     var tarefa = planBController.planosB[index];
-                    logger.d("o que tem um plano b controler");
+                    logger.d("Item no índice $index: Título: ${tarefa.titulo}"); // nem esta sendo mostrado no terminal preciso achar uma forma de mostra-lo no terminal para checar o que esta aparecendo aqui
                     return Dismissible(
                       key: Key(
                         tarefa.id,

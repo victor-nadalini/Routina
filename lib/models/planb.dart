@@ -19,4 +19,9 @@ class Planb extends HiveObject {
     required this.titulo,
     this.concluida = false
   });
+
+  @override
+  String toString() {
+    return 'PlanB(id: $id, title: "$titulo", planBText: "$concluida")';
+  }
 }
