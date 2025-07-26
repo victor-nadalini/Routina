@@ -9,13 +9,14 @@ import 'models/task.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:routina/controllers/plan_b_controller.dart';
+import 'models/planb.dart';
 
 void main() async {
 
   try {
 
     initializeDateFormatting('pt_BR', null).then((_) => runApp(
-      ChangeNotifierProvider(create: (context) => PlanBController(),
+      ChangeNotifierProvider(create: (context) => PlanBController(), // chrcar se precisa de adaptador
       child: MyApp()
       )));
     
@@ -26,8 +27,10 @@ void main() async {
     // usar so durante o desenvolvimento
     await Hive.deleteBoxFromDisk('TasksAtivas');
     await Hive.deleteBoxFromDisk('TasksConcluidas');
+    await Hive.deleteBoxFromDisk('PlanosB');
 
-    Hive.registerAdapter(TaskAdapter());
+    Hive.registerAdapter(TaskAdapter()); // talvez tenha esquecido de por mais um adaptador por aqui
+    Hive.registerAdapter(PlanbAdapter());
 
     await Hive.openBox('PlanosB');
     await Hive.openBox('TasksAtivas');

@@ -294,7 +294,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     return Dismissible(
                       key: Key(
                         tarefa.id,
-                      ), // adicionar tarefa.id.tarefasConcluidas
+                      ),
                       direction: DismissDirection.endToStart,
                       onDismissed: (direction) {
                         setState(() {
@@ -370,89 +370,82 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               if (mostrarPlanob)
                 ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: planBController.planosB.length,
-                  itemBuilder: (context, index) {
-                    var tarefa = planBController.planosB[index];
-                    logger.d("Item no índice $index: Título: ${tarefa.titulo}"); // nem esta sendo mostrado no terminal preciso achar uma forma de mostra-lo no terminal para checar o que esta aparecendo aqui
-                    return Dismissible(
-                      key: Key(
-                        tarefa.id,
-                      ), // adicionar tarefa.id.tarefasConcluidas
-                      direction: DismissDirection.endToStart,
-                      onDismissed: (direction) {
-                        setState(() {
-                          //_taskController.deleteTaskConcluidas(index);
-                          //logger.d("deletada tarefa $index");
-                        });
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: planBController.planosB.length,
+                itemBuilder: (context, index) {
+                  var tarefa = planBController.planosB[index];
+                  return Dismissible(
+                    key: Key(tarefa.id),
+                    direction: DismissDirection.endToStart,
+                    onDismissed: (direction) {
+                      setState(() {
+                        _taskController.deleteTaskAtiva(index);
+                        logger.d("deletada tarefa $index");
+                      });
 
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Tarefa removida")),
-                        );
-                      },
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Tarefa removida")),
+                      );
+                    },
 
-                      background: Container(
-                        color: Colors.red,
-                        alignment: Alignment.centerRight,
-                        padding: EdgeInsets.only(right: 20),
-                        child: Icon(Icons.delete, color: Colors.white),
+                    background: Container(
+                      color: Colors.red,
+                      alignment: Alignment.centerRight,
+                      padding: EdgeInsets.only(right: 20),
+                      child: Icon(Icons.delete, color: Colors.white),
+                    ),
+                    child: Container(
+                      width: 340,
+                      height: 73,
+                      margin: EdgeInsets.only(top: 11),
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: Colors.blueAccent),
                       ),
-
-                      child: Container(
-                        width: 340,
-                        height: 73,
-                        margin: EdgeInsets.only(bottom: 11),
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(color: Colors.blueAccent),
-                        ),
-                        padding: EdgeInsets.all(11),
-                        child: Row(
-                          children: [
-                            IconButton(
-                              color: Colors.blueAccent,
-                              onPressed: () {
+                      padding: EdgeInsets.all(11),
+                      child: Row(
+                        children: [
+                          IconButton(
+                            color: Colors.blueAccent,
+                            onPressed: () {
+                              setState(() {
+                                _taskController.concluirTarefa(index);
+                                logger.d("cocluir tarefa");
+                                logger.d("mostrar $mostrarConcluida");
+                              });
+                            },
+                            icon: Icon(Icons.radio_button_unchecked),
+                          ),
+                          Expanded(
+                            child: TextField(
+                              controller: TextEditingController(
+                                text: tarefa.titulo,
+                              ),
+                              onSubmitted: (newTitle) {
                                 setState(() {
-                                 // _taskController.desconcluirTarefa(index);
-                                 // logger.d("tarefas ja na lista de conclusão");
+                                  logger.d("update realizado");
+                                  _taskController.updateTaskAtivas(
+                                    index,
+                                    newTitle,
+                                  );
                                 });
                               },
-                              icon: Icon(Icons.check_circle),
-                            ),
-                            Expanded(
-                              child: TextField(
-                                controller: TextEditingController(
-                                  text: tarefa.titulo,
-                                ),
-                                onSubmitted: (newTitle) {
-                                  setState(() {
-                                  //  logger.d("update realizado");
-                                  //  _taskController.updateTaskConcluidas(
-                                  //    index,
-                                  //    newTitle,
-                                 //   );
-                                  });
-                                },
 
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                ),
-
-                                style: TextStyle(
-                                  color: Colors.blueAccent,
-                                  decoration: TextDecoration.lineThrough,
-                                  decorationColor: Colors.blueAccent,
-                                ),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
                               ),
+
+                              style: TextStyle(color: Colors.blueAccent),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),
