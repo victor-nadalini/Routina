@@ -488,7 +488,21 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: TextStyle(color: Colors.black, fontSize: 15),
                         ),
               ),
-              ElevatedButton(
+              
+
+              if (planBController.errorMessage != null &&
+                  !planBController.isLoading) // so em desenvolvimento
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    'Erro: ${planBController.errorMessage!}',
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                ElevatedButton(
                               onPressed: () {},
 
                               style: ElevatedButton.styleFrom(
@@ -509,19 +523,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                       
                             ),
-
-              if (planBController.errorMessage != null &&
-                  !planBController.isLoading) // so em desenvolvimento
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    'Erro: ${planBController.errorMessage!}',
-                    style: const TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
 
               SizedBox(height: 16),
               Align(
@@ -577,6 +578,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
+              
             ],
           ),
         ),
