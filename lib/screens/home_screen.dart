@@ -25,33 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final double _bottomSheetHeight = 60.0 + 16.0 + 33.0 + 60.0;
 
-  void _showPlanBPresentationDialog(String planoBContent) {
-    // somente durante o desenvolvimento
-    showDialog(
-      context: context, // 'context' está disponível dentro do State
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Seu Plano B:'), // Título do pop-up
-          content: SingleChildScrollView(
-            // Permite rolagem se o texto do plano B for muito longo
-            child: Text(
-              planoBContent, // Conteúdo do plano B que você passou
-              style: const TextStyle(fontSize: 16),
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Entendi'), // Botão para fechar o pop-up
-              onPressed: () {
-                Navigator.of(context).pop(); // Fecha o pop-up
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   void initState() {
     super.initState();
@@ -456,6 +429,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             ),
+                            
                           ],
                         ),
                       ),
@@ -496,12 +470,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           }
                           await planBController.gerarPlanoB(tarefasEnviar);
 
-                          if (planBController.ganeratedPlanoBs != null) {
-                            _showPlanBPresentationDialog(
-                              planBController.ganeratedPlanoBs!,
-                            ); // so em desenvolvimento
-                          } else {
-                            logger.d("nada no generate");
+                          if (planBController.planosB.isNotEmpty) {
+                            planBController.deleteListPlanb();
                           }
                         },
 
@@ -518,6 +488,27 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: TextStyle(color: Colors.black, fontSize: 15),
                         ),
               ),
+              ElevatedButton(
+                              onPressed: () {},
+
+                              style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.redAccent,
+                              ),
+
+                              child:
+                                  planBController.isLoading
+                                      ? const CircularProgressIndicator(
+                                        color: Colors.red,
+                                      )
+                                      : const Text(
+                                        "APAGAR PLANO B",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 13,
+                                        ),
+                                      ),
+                                      
+                            ),
 
               if (planBController.errorMessage != null &&
                   !planBController.isLoading) // so em desenvolvimento

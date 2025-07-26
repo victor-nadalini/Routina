@@ -69,7 +69,7 @@ class PlanBController extends ChangeNotifier {
       logger.d("loop de genrate esta mostrando o que $generatedPlanoBs");
 
       for (String titulo in generatedPlanoBs!) {
-        Planb planb = Planb(id: _uuid.v4(), titulo: titulo);
+        Planb planb = Planb(id: _uuid.v4(), titulo: titulo, concluida: false);
         logger.d("o que tem no titulo plano b gerado $titulo");
         planosb.add(planb);
       }
@@ -96,6 +96,10 @@ class PlanBController extends ChangeNotifier {
     if (index >= 0 && index < planosB.length) {
       planosb.deleteAt(index);
     }
+  }
+
+  void deleteListPlanb() {
+    planosb.deleteAll(planosB);
   }
 
   void updatePlanb(int id, String newTitle) {
