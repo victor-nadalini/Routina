@@ -429,7 +429,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             ),
-                            
                           ],
                         ),
                       ),
@@ -469,10 +468,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             return;
                           }
                           await planBController.gerarPlanoB(tarefasEnviar);
-
-                          if (planBController.planosB.isNotEmpty) {
-                            planBController.deleteListPlanb();
-                          }
                         },
 
                 style: ElevatedButton.styleFrom(
@@ -488,7 +483,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: TextStyle(color: Colors.black, fontSize: 15),
                         ),
               ),
-              
 
               if (planBController.errorMessage != null &&
                   !planBController.isLoading) // so em desenvolvimento
@@ -502,27 +496,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                ElevatedButton(
-                              onPressed: () {},
+              ElevatedButton(
+                onPressed: () {
+                  planBController.delateListPlanB();
+                },
 
-                              style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.redAccent,
-                              ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.redAccent,
+                ),
 
-                              child:
-                                  planBController.isLoading
-                                      ? const CircularProgressIndicator(
-                                        color: Colors.red,
-                                      )
-                                      : const Text(
-                                        "APAGAR PLANO B",
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 13,
-                                        ),
-                                      ),
-                                      
-                            ),
+                child: const Text(
+                  "APAGAR PLANO B",
+                  style: TextStyle(color: Colors.black, fontSize: 14),
+                ),
+              ),
 
               SizedBox(height: 16),
               Align(
@@ -578,7 +565,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              
             ],
           ),
         ),

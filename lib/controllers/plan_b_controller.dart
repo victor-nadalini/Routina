@@ -14,6 +14,12 @@ class PlanBController extends ChangeNotifier {
 
   static Box get planosb => Hive.box('PlanosB');
 
+  Future<void> delateListPlanB() async {
+    await planosb.clear();
+    notifyListeners();
+    logger.d("Todos os Planos B foram apagados da Box.");
+  }
+
   List<Planb> get planosB {
     return planosb.values.cast<Planb>().toList();
   }
@@ -57,6 +63,11 @@ class PlanBController extends ChangeNotifier {
         return;
       }
 
+       if (planosb.isNotEmpty) {
+      logger.d("Plano B existente detectado. Apagando antes de gerar um novo.");
+      await delateListPlanB(); // Chama o método para limpar a Box
+    }
+
       String resultado = await _service.getGpt4allResponse(tarefasEnviar);
       List<String>? generatedPlanoBs =
           extrairTarefasDoPlanoB(resultado) as List<String>?;
@@ -80,7 +91,7 @@ class PlanBController extends ChangeNotifier {
 
       logger.d(
         "a tabela é atualizada ? Conteúdo completo: ${planosb.toMap()}",
-      ); // os dados estão sendo criados corretamente agora o erro deve estar na logica de passar os dados para minha screem
+      ); 
 
       logger.d("tem alguma na tabela planos b $planosB");
     } catch (e) {
@@ -96,10 +107,6 @@ class PlanBController extends ChangeNotifier {
     if (index >= 0 && index < planosB.length) {
       planosb.deleteAt(index);
     }
-  }
-
-  void deleteListPlanb() {
-    planosb.deleteAll(planosb as Iterable);
   }
 
   void updatePlanb(int id, String newTitle) {
