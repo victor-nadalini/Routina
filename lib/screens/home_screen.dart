@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:routina/controllers/task_controller.dart';
-import 'package:intl/intl.dart';// ignore: unused_import
+import 'package:intl/intl.dart'; // ignore: unused_import
 import 'package:routina/controllers/plan_b_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:routina/models/task.dart';
@@ -21,51 +21,46 @@ class _HomeScreenState extends State<HomeScreen> {
   bool mostrarConcluida = false;
   bool mostrarPlanob = false;
   DateTime date = DateTime.now();
-  late String dateFormat = DateFormat(
-    'EEE, dd MMM yyyy',
-    'pt_BR',
-  ).format(date);
-  
+  late String dateFormat = DateFormat('EEE, dd MMM yyyy', 'pt_BR').format(date);
 
   final double _bottomSheetHeight = 60.0 + 16.0 + 33.0 + 60.0;
 
-  void _showPlanBPresentationDialog(String planoBContent) { // somente durante o desenvolvimento
-  showDialog(
-    context: context, // 'context' está disponível dentro do State
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Seu Plano B:'), // Título do pop-up
-        content: SingleChildScrollView(
-          // Permite rolagem se o texto do plano B for muito longo
-          child: Text(
-            planoBContent, // Conteúdo do plano B que você passou
-            style: const TextStyle(fontSize: 16),
+  void _showPlanBPresentationDialog(String planoBContent) {
+    // somente durante o desenvolvimento
+    showDialog(
+      context: context, // 'context' está disponível dentro do State
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Seu Plano B:'), // Título do pop-up
+          content: SingleChildScrollView(
+            // Permite rolagem se o texto do plano B for muito longo
+            child: Text(
+              planoBContent, // Conteúdo do plano B que você passou
+              style: const TextStyle(fontSize: 16),
+            ),
           ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('Entendi'), // Botão para fechar o pop-up
-            onPressed: () {
-              Navigator.of(context).pop(); // Fecha o pop-up
-            },
-          ),
-        ],
-      );
-    },
-  );
-}
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Entendi'), // Botão para fechar o pop-up
+              onPressed: () {
+                Navigator.of(context).pop(); // Fecha o pop-up
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
-  
   void initState() {
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-        
     final planBController = Provider.of<PlanBController>(context);
-    
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -230,14 +225,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
               ),
-              Row( 
+              Row(
                 children: [
                   TextButton(
                     onPressed: () {
                       setState(() {
                         if (mostrarPlanob == false) {
-                        mostrarConcluida = !mostrarConcluida;
-                        logger.d("mostrar concluídas: $mostrarConcluida");
+                          mostrarConcluida = !mostrarConcluida;
+                          logger.d("mostrar concluídas: $mostrarConcluida");
                         }
                       });
                     },
@@ -255,7 +250,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               : Icons.keyboard_arrow_down,
                           color: Colors.blueAccent,
                         ),
-                      ]
+                      ],
                     ),
                   ),
 
@@ -263,14 +258,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     onPressed: () {
                       setState(() {
                         if (mostrarConcluida == false) {
-                        mostrarPlanob = !mostrarPlanob;
-                        logger.d("lista do plano b");
+                          mostrarPlanob = !mostrarPlanob;
+                          logger.d("lista do plano b");
                         }
                       });
                     },
                     child: Row(
                       children: [
-                        Text("Plano B", style: TextStyle(color: Colors.blueAccent)),
+                        Text(
+                          "Plano B",
+                          style: TextStyle(color: Colors.blueAccent),
+                        ),
                         SizedBox(width: 1),
                         Icon(
                           mostrarPlanob
@@ -292,9 +290,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemBuilder: (context, index) {
                     var tarefa = _taskController.tarefasConcluidas[index];
                     return Dismissible(
-                      key: Key(
-                        tarefa.id,
-                      ),
+                      key: Key(tarefa.id),
                       direction: DismissDirection.endToStart,
                       onDismissed: (direction) {
                         setState(() {
@@ -370,82 +366,102 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               if (mostrarPlanob)
                 ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: planBController.planosB.length,
-                itemBuilder: (context, index) {
-                  var tarefa = planBController.planosB[index];
-                  return Dismissible(
-                    key: Key(tarefa.id),
-                    direction: DismissDirection.endToStart,
-                    onDismissed: (direction) {
-                      setState(() {
-                        _taskController.deleteTaskAtiva(index);
-                        logger.d("deletada tarefa $index");
-                      });
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: planBController.planosB.length,
+                  itemBuilder: (context, index) {
+                    var tarefa = planBController.planosB[index];
+                    return Dismissible(
+                      key: Key(tarefa.id),
+                      direction: DismissDirection.endToStart,
+                      onDismissed: (direction) {
+                        setState(() {
+                          planBController.deletePlanb(index);
+                          logger.d("deletada tarefa $index");
+                        });
 
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Tarefa removida")),
-                      );
-                    },
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Tarefa removida")),
+                        );
+                      },
 
-                    background: Container(
-                      color: Colors.red,
-                      alignment: Alignment.centerRight,
-                      padding: EdgeInsets.only(right: 20),
-                      child: Icon(Icons.delete, color: Colors.white),
-                    ),
-                    child: Container(
-                      width: 340,
-                      height: 73,
-                      margin: EdgeInsets.only(top: 11),
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: Colors.blueAccent),
+                      background: Container(
+                        color: Colors.red,
+                        alignment: Alignment.centerRight,
+                        padding: EdgeInsets.only(right: 20),
+                        child: Icon(Icons.delete, color: Colors.white),
                       ),
-                      padding: EdgeInsets.all(11),
-                      child: Row(
-                        children: [
-                          IconButton(
-                            color: Colors.blueAccent,
-                            onPressed: () {
-                              setState(() {
-                                _taskController.concluirTarefa(index);
-                                logger.d("cocluir tarefa");
-                                logger.d("mostrar $mostrarConcluida");
-                              });
-                            },
-                            icon: Icon(Icons.radio_button_unchecked),
-                          ),
-                          Expanded(
-                            child: TextField(
-                              controller: TextEditingController(
-                                text: tarefa.titulo,
-                              ),
-                              onSubmitted: (newTitle) {
+                      child: Container(
+                        width: 340,
+                        height: 73,
+                        margin: EdgeInsets.only(top: 11),
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.blueAccent),
+                        ),
+                        padding: EdgeInsets.all(11),
+                        child: Row(
+                          children: [
+                            IconButton(
+                              color: Colors.blueAccent,
+                              onPressed: () {
                                 setState(() {
-                                  logger.d("update realizado");
-                                  _taskController.updateTaskAtivas(
-                                    index,
-                                    newTitle,
-                                  );
+                                  if (tarefa.concluida == false) {
+                                    planBController.concluirPlanob(index);
+                                    logger.d(
+                                      "botão de conclusão de plano b clicado $mostrarPlanob",
+                                    );
+                                  } else if (tarefa.concluida == true) {
+                                    planBController.desconcluirPlanob(index);
+                                    logger.d(
+                                      "botão de desconclusão de plano b clicado $mostrarPlanob",
+                                    );
+                                  }
                                 });
                               },
-
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
+                              icon: Icon(
+                                tarefa.concluida
+                                    ? Icons.radio_button_unchecked
+                                    : Icons.check_circle,
+                                color: Colors.blueAccent,
                               ),
-
-                              style: TextStyle(color: Colors.blueAccent),
                             ),
-                          ),
-                        ],
+                            Expanded(
+                              child: TextField(
+                                controller: TextEditingController(
+                                  text: tarefa.titulo,
+                                ),
+                                onSubmitted: (newTitle) {
+                                  setState(() {
+                                    logger.d("update realizado");
+                                    planBController.updatePlanb(
+                                      index,
+                                      newTitle,
+                                    );
+                                  });
+                                },
+
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                ),
+
+                                style: TextStyle(
+                                  color: Colors.blueAccent,
+                                  decoration:
+                                      tarefa.concluida
+                                          ? TextDecoration.none
+                                          : TextDecoration.lineThrough,
+                                  decorationColor: Colors.blueAccent,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                },
-              ),
+                    );
+                  },
+                ),
             ],
           ),
         ),
@@ -459,9 +475,14 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ElevatedButton(
-                onPressed: planBController.isLoading ? null : () async {
-                  final List<Task> titulos = TaskController().tarefasAtivas; 
-                  final List<String> tarefasEnviar = titulos.map((task) => task.titulo).toList();
+                onPressed:
+                    planBController.isLoading
+                        ? null
+                        : () async {
+                          final List<Task> titulos =
+                              TaskController().tarefasAtivas;
+                          final List<String> tarefasEnviar =
+                              titulos.map((task) => task.titulo).toList();
 
                           if (tarefasEnviar.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -473,32 +494,43 @@ class _HomeScreenState extends State<HomeScreen> {
                             );
                             return;
                           }
-                         await planBController.gerarPlanoB(tarefasEnviar);
-                         
-                         if (planBController.ganeratedPlanoBs != null) {
-                          _showPlanBPresentationDialog(planBController.ganeratedPlanoBs!); // so em desenvolvimento
-                         } else {
-                          logger.d("nada no generate");
-                         }
+                          await planBController.gerarPlanoB(tarefasEnviar);
+
+                          if (planBController.ganeratedPlanoBs != null) {
+                            _showPlanBPresentationDialog(
+                              planBController.ganeratedPlanoBs!,
+                            ); // so em desenvolvimento
+                          } else {
+                            logger.d("nada no generate");
+                          }
                         },
-                        
 
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blueAccent,
                 ),
-                        child: planBController.isLoading
-                        ? const CircularProgressIndicator(color: Colors.blueAccent)
-                        : const Text("PLANO B", style: TextStyle(color: Colors.black, fontSize: 15)),
+                child:
+                    planBController.isLoading
+                        ? const CircularProgressIndicator(
+                          color: Colors.blueAccent,
+                        )
+                        : const Text(
+                          "PLANO B",
+                          style: TextStyle(color: Colors.black, fontSize: 15),
+                        ),
               ),
 
-              if (planBController.errorMessage != null && !planBController.isLoading) // so em desenvolvimento
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'Erro: ${planBController.errorMessage!}',
-                style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-              ),
-            ),
+              if (planBController.errorMessage != null &&
+                  !planBController.isLoading) // so em desenvolvimento
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    'Erro: ${planBController.errorMessage!}',
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
 
               SizedBox(height: 16),
               Align(

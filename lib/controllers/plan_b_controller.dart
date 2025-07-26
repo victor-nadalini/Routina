@@ -58,35 +58,86 @@ class PlanBController extends ChangeNotifier {
       }
 
       String resultado = await _service.getGpt4allResponse(tarefasEnviar);
-      List<String>? generatedPlanoBs = extrairTarefasDoPlanoB(resultado) as List<String>?;
-      logger.d("RESPOSTA BRUTA DA IA RECEBIDA:\n$resultado"); 
+      List<String>? generatedPlanoBs =
+          extrairTarefasDoPlanoB(resultado) as List<String>?;
+      logger.d("RESPOSTA BRUTA DA IA RECEBIDA:\n$resultado");
       logger.d("informaçoes sobre plano b gerado $generatedPlanoBs");
-      logger.d("plano 1 ${generatedPlanoBs?[0]} plano 2 ${generatedPlanoBs?[1]} plano 3 ${generatedPlanoBs?[2]}");
+      logger.d(
+        "plano 1 ${generatedPlanoBs?[0]} plano 2 ${generatedPlanoBs?[1]} plano 3 ${generatedPlanoBs?[2]}",
+      );
 
+      logger.d("loop de genrate esta mostrando o que $generatedPlanoBs");
 
-        
-        logger.d("loop de genrate esta mostrando o que $generatedPlanoBs"); 
-
-        for (String titulo in generatedPlanoBs!) {
+      for (String titulo in generatedPlanoBs!) {
         Planb planb = Planb(id: _uuid.v4(), titulo: titulo);
         logger.d("o que tem no titulo plano b gerado $titulo");
         planosb.add(planb);
-        }
-        
+      }
+
       logger.d("a tabela é atualizada ? ${planosb.values.toList()}");
 
       logger.d("a tabela é atualizada ? Número de itens: ${planosb.length}");
 
-      logger.d("a tabela é atualizada ? Conteúdo completo: ${planosb.toMap()}"); // os dados estão sendo criados corretamente agora o erro deve estar na logica de passar os dados para minha screem
+      logger.d(
+        "a tabela é atualizada ? Conteúdo completo: ${planosb.toMap()}",
+      ); // os dados estão sendo criados corretamente agora o erro deve estar na logica de passar os dados para minha screem
 
       logger.d("tem alguma na tabela planos b $planosB");
-      
     } catch (e) {
       _errorMesage = "Erro ao criar plano b $e.toString()";
       logger.d("erro ao criar plano b $e");
     } finally {
       _isLoading = false;
       notifyListeners();
+    }
+  }
+
+  void deletePlanb(int index) {
+    if (index >= 0 && index < planosB.length) {
+      planosb.deleteAt(index);
+    }
+  }
+
+  void updatePlanb(int id, String newTitle) {
+    final tarefa = planosb.getAt(id) as Planb;
+
+    final updateTask = Planb(
+      id: tarefa.id,
+      titulo: newTitle,
+      concluida: tarefa.concluida,
+    );
+
+    planosb.putAt(id, updateTask);
+  }
+
+  void concluirPlanob(int index) {
+    if (index >= 0 && index < planosB.length) {
+      final tarefa = planosb.getAt(index);
+      if (tarefa != null) {
+        
+        final concluir = Planb(
+          id: tarefa.id,
+          titulo: tarefa.titulo,
+          concluida: true,
+        );
+
+        planosb.putAt(index, concluir);
+      }
+    }
+  }
+  void desconcluirPlanob(int index) {
+    if (index >= 0 && index < planosB.length) {
+      final tarefa = planosb.getAt(index);
+      if (tarefa != null) {
+        
+        final desconcluir = Planb(
+          id: tarefa.id,
+          titulo: tarefa.titulo,
+          concluida: false,
+        );
+
+        planosb.putAt(index, desconcluir);
+      }
     }
   }
 }
