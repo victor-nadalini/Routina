@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
             left: 16,
             right: 16,
             top: 16,
-            bottom: _bottomSheetHeight + 16,
+            bottom: _bottomSheetHeight + 40,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

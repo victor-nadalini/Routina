@@ -73,9 +73,6 @@ class PlanBController extends ChangeNotifier {
           extrairTarefasDoPlanoB(resultado) as List<String>?;
       logger.d("RESPOSTA BRUTA DA IA RECEBIDA:\n$resultado");
       logger.d("informaçoes sobre plano b gerado $generatedPlanoBs");
-      logger.d(
-        "plano 1 ${generatedPlanoBs?[0]} plano 2 ${generatedPlanoBs?[1]} plano 3 ${generatedPlanoBs?[2]}",
-      );
 
       logger.d("loop de genrate esta mostrando o que $generatedPlanoBs");
 
