@@ -49,10 +49,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {   
 
     return MaterialApp(
-      
+
       title: 'Routina',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(),
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        primaryColor: Colors.blueAccent,
+
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: Colors.blueAccent,
+          selectionHandleColor: Colors.blueAccent,
+          selectionColor: Colors.blueAccent.withValues(alpha: 0.3),
+      ),
+      scaffoldBackgroundColor: Colors.black
+      ),
       initialRoute: '/',
       routes: {
         '/': (context) => const SplashScreen(),

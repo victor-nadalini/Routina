@@ -142,14 +142,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
 
                     background: Container(
-                      color: Colors.red,
+                      color: Colors.blueAccent,
                       alignment: Alignment.centerRight,
                       padding: EdgeInsets.only(right: 20),
                       child: Icon(Icons.delete, color: Colors.white),
                     ),
                     child: Container(
                       width: 340,
-                      height: 73,
                       margin: EdgeInsets.only(top: 11),
                       decoration: BoxDecoration(
                         color: Colors.black,
@@ -172,6 +171,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           Expanded(
                             child: TextField(
+                              maxLines: 5, 
+                              minLines: 1,
+
+                              textInputAction: TextInputAction.done,
+                              keyboardType: TextInputType.text,
+
                               controller: TextEditingController(
                                 text: tarefa.titulo,
                               ),
@@ -183,6 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     newTitle,
                                   );
                                 });
+                                FocusScope.of(context).unfocus();
                               },
 
                               decoration: InputDecoration(
@@ -277,7 +283,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
 
                       background: Container(
-                        color: Colors.red,
+                        color: Colors.blueAccent,
                         alignment: Alignment.centerRight,
                         padding: EdgeInsets.only(right: 20),
                         child: Icon(Icons.delete, color: Colors.white),
@@ -285,7 +291,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
                       child: Container(
                         width: 340,
-                        height: 73,
                         margin: EdgeInsets.only(bottom: 11),
                         decoration: BoxDecoration(
                           color: Colors.black,
@@ -307,6 +312,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             Expanded(
                               child: TextField(
+                                maxLines: 5, 
+                                minLines: 1,
+
+                                textInputAction: TextInputAction.done,
+                                keyboardType: TextInputType.text,
                                 controller: TextEditingController(
                                   text: tarefa.titulo,
                                 ),
@@ -318,6 +328,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       newTitle,
                                     );
                                   });
+                                  FocusScope.of(context).unfocus();
                                 },
 
                                 decoration: InputDecoration(
@@ -359,14 +370,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
 
                       background: Container(
-                        color: Colors.red,
+                        color: Colors.blueAccent, // tem que mudar a cor nos concluidos e ativados isso pode ter influenciado em não ter efeito no botão posso ter so colocado na parte de concluidas e testado na ativas
                         alignment: Alignment.centerRight,
                         padding: EdgeInsets.only(right: 20),
                         child: Icon(Icons.delete, color: Colors.white),
                       ),
                       child: Container(
                         width: 340,
-                        height: 73,
                         margin: EdgeInsets.only(top: 11),
                         decoration: BoxDecoration(
                           color: Colors.black,
@@ -402,6 +412,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             Expanded(
                               child: TextField(
+                                maxLines: 5, 
+                                minLines: 1,
+
+                                textInputAction: TextInputAction.done,
+                                keyboardType: TextInputType.text,
                                 controller: TextEditingController(
                                   text: tarefa.titulo,
                                 ),
@@ -413,6 +428,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       newTitle,
                                     );
                                   });
+                                  FocusScope.of(context).unfocus();
                                 },
 
                                 decoration: InputDecoration(
@@ -491,7 +507,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Text(
                     'Erro: ${planBController.errorMessage!}',
                     style: const TextStyle(
-                      color: Colors.red,
+                      color: Colors.blueAccent,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -515,8 +531,8 @@ class _HomeScreenState extends State<HomeScreen> {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: SizedBox(
-                  height: 33,
-                  width: 251,
+                  height: 73,
+                  width: 340,
                   child: TextField(
                     textAlign: TextAlign.left,
                     controller: _controller,
@@ -530,7 +546,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       prefixIcon: Padding(
                         padding: EdgeInsets.only(left: 0),
                         child: Icon(
-                          Icons.radio_button_unchecked,
+
+                          clicouNoCampo // parei aqui fazer a logica funcionar
+                          ? Icons.add
+                          : Icons.radio_button_unchecked,
+
                           color: Colors.blueAccent,
                           size: 20,
                         ),
@@ -540,7 +560,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         borderSide: BorderSide(color: Colors.blueAccent),
                       ),
                       contentPadding: EdgeInsets.only(left: 0),
-                      hintText: clicouNoCampo ? '' : "Digite nova tarefa?",
+                      hintText: clicouNoCampo ? '' : "Digite nova tarefa",
                       hintStyle: TextStyle(color: Colors.blueAccent),
                       fillColor: Colors.black,
                       focusedBorder: OutlineInputBorder(
