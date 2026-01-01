@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
             left: 16,
             right: 16,
             top: 16,
-            bottom: _bottomSheetHeight + 40,
+            bottom: _bottomSheetHeight + 60,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -142,6 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
 
                     background: Container(
+                      margin: EdgeInsets.only(top: 11),
                       color: Colors.blueAccent,
                       alignment: Alignment.centerRight,
                       padding: EdgeInsets.only(right: 20),
@@ -171,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           Expanded(
                             child: TextField(
-                              maxLines: 5, 
+                              maxLines: 5,
                               minLines: 1,
 
                               textInputAction: TextInputAction.done,
@@ -283,6 +284,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
 
                       background: Container(
+                        margin: EdgeInsets.only(bottom: 11),
                         color: Colors.blueAccent,
                         alignment: Alignment.centerRight,
                         padding: EdgeInsets.only(right: 20),
@@ -312,7 +314,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             Expanded(
                               child: TextField(
-                                maxLines: 5, 
+                                maxLines: 5,
                                 minLines: 1,
 
                                 textInputAction: TextInputAction.done,
@@ -370,14 +372,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
 
                       background: Container(
-                        color: Colors.blueAccent, // tem que mudar a cor nos concluidos e ativados isso pode ter influenciado em não ter efeito no botão posso ter so colocado na parte de concluidas e testado na ativas
+                        margin: EdgeInsets.only(bottom: 11),
+                        color: Colors.blueAccent,
                         alignment: Alignment.centerRight,
                         padding: EdgeInsets.only(right: 20),
                         child: Icon(Icons.delete, color: Colors.white),
                       ),
                       child: Container(
                         width: 340,
-                        margin: EdgeInsets.only(top: 11),
+                        margin: EdgeInsets.only(bottom: 11),
                         decoration: BoxDecoration(
                           color: Colors.black,
                           borderRadius: BorderRadius.circular(5),
@@ -412,7 +415,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             Expanded(
                               child: TextField(
-                                maxLines: 5, 
+                                maxLines: 5,
                                 minLines: 1,
 
                                 textInputAction: TextInputAction.done,
@@ -546,10 +549,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       prefixIcon: Padding(
                         padding: EdgeInsets.only(left: 0),
                         child: Icon(
-
                           clicouNoCampo // parei aqui fazer a logica funcionar
-                          ? Icons.add
-                          : Icons.radio_button_unchecked,
+                              ? Icons.add
+                              : Icons.radio_button_unchecked,
 
                           color: Colors.blueAccent,
                           size: 20,
