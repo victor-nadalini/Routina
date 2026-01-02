@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'screens/home_screen.dart';
-import 'screens/splash_screen.dart';
 import 'screens/change_login.dart';
 import 'package:logger/logger.dart';
 import 'models/task.dart';
@@ -65,8 +64,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => const SplashScreen(),
-        '/change': (context) => changeLogin(),
+        '/': (context) => changeLogin(),
         '/kanban': (context) => HomeScreen(),
       },
     );

@@ -41,8 +41,10 @@ dependencies:
   cupertino_icons: ^1.0.8
   intl: ^0.20.2
   provider: ^6.1.5
+  http: ^1.2.2
 
 dev_dependencies:
+  flutter_native_splash: ^2.4.7
   hive_generator: ^2.0.0
   build_runner: ^2.4.6
   flutter_launcher_icons: "^0.14.4"
@@ -60,6 +62,25 @@ dev_dependencies:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
+flutter_native_splash:
+  # Cor de fundo para versões anteriores ao Android 12 e iOS
+  color: "#000000"
+  
+  # A imagem da sua logo (aquela de 200x200 que você usa no código)
+  image: assets/logo_routina2.png
+  
+  # Garante que ocupe a tela toda (estilo o seu Scaffold)
+  fullscreen: true
+
+  # Configuração específica para Android 12 e superiores
+  android_12:
+    color: "#000000"
+    # No Android 12+, a logo deve estar dentro de um círculo. 
+    # Usaremos a mesma logo para manter a identidade.
+    image: assets/logo_routina2.png
+    # Cor de fundo do ícone (mantendo tudo preto)
+    icon_background_color: "#000000"
+
 # The following section is specific to Flutter packages.
 flutter:
   # The following line ensures that the Material Icons font is
@@ -67,7 +88,7 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - assets/logo_ideia_1.png
+    - assets/logo_routina2.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
