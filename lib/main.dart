@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:routina/services/notifications.dart';
 import 'screens/home_screen.dart';
 import 'screens/change_login.dart';
 import 'package:logger/logger.dart';
@@ -15,7 +16,7 @@ void main() async {
   try {
 
     initializeDateFormatting('pt_BR', null).then((_) => runApp(
-      ChangeNotifierProvider(create: (context) => PlanBController(), // chrcar se precisa de adaptador
+      ChangeNotifierProvider(create: (context) => PlanBController(),
       child: MyApp()
       )));
     
@@ -23,12 +24,22 @@ void main() async {
     final dir = await getApplicationCacheDirectory();
     Hive.init(dir.path);
 
+    await NotificationService().initNotification();
+
+    NotificationService().testeImediato();
+
+    NotificationService().agendarNotificacaoRecorrente(
+      titulo: "não se esqueça de ver suas tarefas!!!", 
+      corpo: "de uma olhada agora para não esquecer suas tarefas e deixar para depois",
+      minutos: 1,
+    );
+
     // usar so durante o desenvolvimento
     await Hive.deleteBoxFromDisk('TasksAtivas');
     await Hive.deleteBoxFromDisk('TasksConcluidas');
     await Hive.deleteBoxFromDisk('PlanosB');
 
-    Hive.registerAdapter(TaskAdapter()); // talvez tenha esquecido de por mais um adaptador por aqui
+    Hive.registerAdapter(TaskAdapter()); 
     Hive.registerAdapter(PlanbAdapter());
 
     await Hive.openBox('PlanosB');
