@@ -35,31 +35,15 @@ class NotificationService {
     }
   }
 
-  Future<void> testeImediato() async {
-  await notificationsPlugin.show(
-    0,
-    "Teste de Conexão",
-    "Se você está lendo isso, o plugin está OK!",
-    const NotificationDetails(
-      android: AndroidNotificationDetails(
-        'canal_teste', 'Teste',
-        importance: Importance.max,
-        priority: Priority.high,
-      ),
-    ),
-  );
-}
-
   Future<void> agendarNotificacaoRecorrente({
     String? titulo,
     String? corpo,
-    required int minutos,
   }) async {
     await notificationsPlugin.periodicallyShow( // esse metodo so permite uma execução vou mudalo para o que permite de hora em hora
       1,
       "Não se esqueça de nos!!!",
       "de uma olhada nas suas tarefas!!!",
-      RepeatInterval.everyMinute,
+      RepeatInterval.hourly,
       const NotificationDetails(
         android: AndroidNotificationDetails(
           'ID_DO_CANAL_LEMBRETES_FIXOS',

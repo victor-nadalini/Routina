@@ -26,12 +26,9 @@ void main() async {
 
     await NotificationService().initNotification();
 
-    NotificationService().testeImediato();
-
     NotificationService().agendarNotificacaoRecorrente(
       titulo: "não se esqueça de ver suas tarefas!!!", 
       corpo: "de uma olhada agora para não esquecer suas tarefas e deixar para depois",
-      minutos: 1,
     );
 
     // usar so durante o desenvolvimento
