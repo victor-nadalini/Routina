@@ -56,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: EdgeInsets.zero,
           children: [
             const DrawerHeader(
+              padding: EdgeInsets.zero,
               decoration: BoxDecoration(color: Colors.black),
               child: Text(
                 "Victor Nadalini",
@@ -80,7 +81,26 @@ class _HomeScreenState extends State<HomeScreen> {
               title: const Text("Login"),
               textColor: Colors.blueAccent,
               onTap: () {
-                Navigator.pushReplacementNamed(context, '/change');
+                Navigator.pushReplacementNamed(context, '/');
+              },
+            ),
+            Container(
+              height: 1,
+              width: double.infinity,
+              color: Colors.white24,
+            ),
+            ListTile(
+              title: const Text("Minha lista"),
+              textColor: Colors.blueAccent,
+              onTap: () {
+                Navigator.pushReplacementNamed(context, '/kanban');
+              },
+            ),
+            ListTile(
+              title: const Text("+ nova lista"),
+              textColor: Colors.blueAccent,
+              onTap: () {
+                // funcção de nova lista
               },
             ),
           ],
