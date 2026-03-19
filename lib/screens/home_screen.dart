@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:routina/controllers/task_controller.dart';
-import 'package:intl/intl.dart'; // ignore: unused_import
+import 'package:intl/intl.dart';
 import 'package:routina/controllers/plan_b_controller.dart';
 import 'package:provider/provider.dart';
+import 'package:routina/models/listTasks.dart';
 import 'package:routina/models/task.dart';
+import 'package:routina/controllers/list_controller.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,6 +18,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final TaskController _taskController = TaskController();
+  final ListTasksController _listTasksController = ListTasksController();
   final logger = Logger();
   final TextEditingController _controller = TextEditingController();
   bool clicouNoCampo = false;
@@ -55,6 +59,31 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
+            // Dentro do seu Drawer
+            /*Expanded( // parte responsavel por atualizar o menu hamburguer
+              child: ValueListenableBuilder(
+                valueListenable: Hive.box<Listtasks>('ListTask').listenable(),
+                builder: (context, Box<Listtasks> box, _) {
+                  final listas = box.values.toList();
+
+                  return ListView.builder(
+                    itemCount: listas.length,
+                    itemBuilder: (context, index) {
+                      final lista = listas[index];
+                      return ListTile(
+                        leading: const Icon(Icons.list_alt),
+                        title: Text(lista.titulo),
+                        onTap: () {
+                          // FECHAR o Drawer e AVISAR a Home para trocar a lista
+                          Navigator.pop(context);
+                          // _selecionarLista(lista);
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
+            ),*/
             const DrawerHeader(
               padding: EdgeInsets.zero,
               decoration: BoxDecoration(color: Colors.black),
@@ -84,11 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.pushReplacementNamed(context, '/');
               },
             ),
-            Container(
-              height: 1,
-              width: double.infinity,
-              color: Colors.white24,
-            ),
+            Container(height: 1, width: double.infinity, color: Colors.white24),
             ListTile(
               title: const Text("Minha lista"),
               textColor: Colors.blueAccent,
@@ -100,7 +125,8 @@ class _HomeScreenState extends State<HomeScreen> {
               title: const Text("+ nova lista"),
               textColor: Colors.blueAccent,
               onTap: () {
-                // funcção de nova lista
+                _listTasksController.addTaskList("titulo");
+                logger.d("nova lista adicionada a home");
               },
             ),
           ],

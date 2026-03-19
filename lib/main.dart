@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:routina/models/listTasks.dart';
 import 'package:routina/services/notifications.dart';
 import 'screens/home_screen.dart';
 import 'screens/change_login.dart';
@@ -38,7 +39,9 @@ void main() async {
 
     Hive.registerAdapter(TaskAdapter()); 
     Hive.registerAdapter(PlanbAdapter());
+    Hive.registerAdapter(ListtasksAdapter());
 
+    await Hive.openBox("ListTask");
     await Hive.openBox('PlanosB');
     await Hive.openBox('TasksAtivas');
     await Hive.openBox('TasksConcluidas');
