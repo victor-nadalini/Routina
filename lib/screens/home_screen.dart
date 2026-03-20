@@ -60,9 +60,9 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: EdgeInsets.zero,
           children: [
             // Dentro do seu Drawer
-            /*Expanded( // parte responsavel por atualizar o menu hamburguer
-              child: ValueListenableBuilder(
-                valueListenable: Hive.box<Listtasks>('ListTask').listenable(),
+            Expanded( // quando o menu hamburguer é aberto agora ele esta tudo escuro creio que os dados estejam ocupando a tela inteira
+              child: ValueListenableBuilder (
+                valueListenable: Hive.box<Listtasks>('listtasks').listenable(),
                 builder: (context, Box<Listtasks> box, _) {
                   final listas = box.values.toList();
 
@@ -83,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
               ),
-            ),*/
+            ),
             const DrawerHeader(
               padding: EdgeInsets.zero,
               decoration: BoxDecoration(color: Colors.black),
@@ -167,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
               SizedBox(height: 16),
 
-              ListView.builder(
+              ListView.builder( // estudar o funcionamento dessa função ela pode ajudar na questão de passar os dados para a tela da nova lista
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: _taskController.tarefasAtivas.length,

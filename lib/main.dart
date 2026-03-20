@@ -13,14 +13,16 @@ import 'package:routina/controllers/plan_b_controller.dart';
 import 'models/planb.dart';
 
 void main() async {
-
   try {
+    initializeDateFormatting('pt_BR', null).then(
+      (_) => runApp(
+        ChangeNotifierProvider(
+          create: (context) => PlanBController(),
+          child: MyApp(),
+        ),
+      ),
+    );
 
-    initializeDateFormatting('pt_BR', null).then((_) => runApp(
-      ChangeNotifierProvider(create: (context) => PlanBController(),
-      child: MyApp()
-      )));
-    
     WidgetsFlutterBinding.ensureInitialized();
     final dir = await getApplicationCacheDirectory();
     Hive.init(dir.path);
@@ -28,8 +30,9 @@ void main() async {
     await NotificationService().initNotification();
 
     NotificationService().agendarNotificacaoRecorrente(
-      titulo: "não se esqueça de ver suas tarefas!!!", 
-      corpo: "de uma olhada agora para não esquecer suas tarefas e deixar para depois",
+      titulo: "não se esqueça de ver suas tarefas!!!",
+      corpo:
+          "de uma olhada agora para não esquecer suas tarefas e deixar para depois",
     );
 
     // usar so durante o desenvolvimento
@@ -37,11 +40,12 @@ void main() async {
     await Hive.deleteBoxFromDisk('TasksConcluidas');
     await Hive.deleteBoxFromDisk('PlanosB');
 
-    Hive.registerAdapter(TaskAdapter()); 
-    Hive.registerAdapter(PlanbAdapter());
     Hive.registerAdapter(ListtasksAdapter());
+    Hive.registerAdapter(PlanbAdapter());
+    Hive.registerAdapter(TaskAdapter());
 
-    await Hive.openBox("ListTask");
+
+    await Hive.openBox<Listtasks>('listtasks');
     await Hive.openBox('PlanosB');
     await Hive.openBox('TasksAtivas');
     await Hive.openBox('TasksConcluidas');
@@ -56,10 +60,8 @@ class MyApp extends StatelessWidget {
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {   
-
+  Widget build(BuildContext context) {
     return MaterialApp(
-
       title: 'Routina',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -70,8 +72,8 @@ class MyApp extends StatelessWidget {
           cursorColor: Colors.blueAccent,
           selectionHandleColor: Colors.blueAccent,
           selectionColor: Colors.blueAccent.withValues(alpha: 0.3),
-      ),
-      scaffoldBackgroundColor: Colors.black
+        ),
+        scaffoldBackgroundColor: Colors.black,
       ),
       initialRoute: '/',
       routes: {

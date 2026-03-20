@@ -6,7 +6,7 @@ import 'package:logger/logger.dart';
 class ListTasksController {
   final Logger logger = Logger();
 
-  static Box get listTasks => Hive.box('ListTask');
+  static Box get listTasks => Hive.box('listtasks');
 
   final _uuid = Uuid();
 
