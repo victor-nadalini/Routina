@@ -22,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final logger = Logger();
   final TextEditingController _controller = TextEditingController();
   bool clicouNoCampo = false;
+  bool clicouNoCampoAdicionarLista = false;
   bool mostrarConcluida = false;
   bool mostrarPlanob = false;
   DateTime date = DateTime.now();
@@ -56,34 +57,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       drawer: Drawer(
         backgroundColor: Colors.black,
-        child: ListView(
-          padding: EdgeInsets.zero,
+        child: Column(
           children: [
-            // Dentro do seu Drawer
-            Expanded( // quando o menu hamburguer é aberto agora ele esta tudo escuro creio que os dados estejam ocupando a tela inteira
-              child: ValueListenableBuilder (
-                valueListenable: Hive.box<Listtasks>('listtasks').listenable(),
-                builder: (context, Box<Listtasks> box, _) {
-                  final listas = box.values.toList();
-
-                  return ListView.builder(
-                    itemCount: listas.length,
-                    itemBuilder: (context, index) {
-                      final lista = listas[index];
-                      return ListTile(
-                        leading: const Icon(Icons.list_alt),
-                        title: Text(lista.titulo),
-                        onTap: () {
-                          // FECHAR o Drawer e AVISAR a Home para trocar a lista
-                          Navigator.pop(context);
-                          // _selecionarLista(lista);
-                        },
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
             const DrawerHeader(
               padding: EdgeInsets.zero,
               decoration: BoxDecoration(color: Colors.black),
@@ -121,12 +96,74 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.pushReplacementNamed(context, '/kanban');
               },
             ),
-            ListTile(
-              title: const Text("+ nova lista"),
-              textColor: Colors.blueAccent,
+            Divider(),
+
+            Expanded(
+              // quando o menu hamburguer é aberto agora ele esta tudo escuro creio que os dados estejam ocupando a tela inteira
+              child: ValueListenableBuilder(
+                valueListenable: Hive.box<Listtasks>('listtasks').listenable(),
+                builder: (context, Box<Listtasks> box, _) {
+                  if (box.isEmpty) {
+                    return const Center(
+                      child: Text("nenhuma lista foi encontrada"),
+                    ); // nenhuma lista esta sendo encontrada
+                  }
+                  final listas = box.values.toList();
+
+                  return ListView.builder(
+                    itemCount: listas.length,
+                    itemBuilder: (context, index) {
+                      final lista = box.getAt(index);
+
+                      if (lista == null) return const SizedBox();
+
+                      return ListTile(
+                        title: Text(lista.titulo),
+                        textColor: Colors.blueAccent,
+                        onTap: () {
+                          // FECHAR o Drawer e AVISAR a Home para trocar a lista
+                          // Navigator.pop(context);
+                          // _selecionarLista(lista);
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+            TextField(
+              controller: _controller,
+              style: const TextStyle(color: Colors.blueAccent),
               onTap: () {
-                _listTasksController.addTaskList("titulo");
-                logger.d("nova lista adicionada a home");
+                setState(() {
+                  logger.d("input limbo digite");
+                  clicouNoCampoAdicionarLista = true;
+                });
+              },
+              decoration: InputDecoration(
+                hintText:
+                    clicouNoCampoAdicionarLista ? 'Nova lista' : "+ Nova lista",
+                hintStyle: const TextStyle(color: Colors.blueAccent),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide.none,
+                ),
+                filled: true,
+                fillColor: Colors.black,
+              ),
+              onSubmitted: (String titulo) {
+                setState(() {
+                  if (titulo.isNotEmpty) {
+                    _listTasksController.addTaskList(titulo);
+                    _controller.clear();
+                    clicouNoCampoAdicionarLista = false;
+                  } else {
+                    _listTasksController.addTaskList("Nova lista");
+                    _controller.clear();
+                    clicouNoCampoAdicionarLista = false;
+                  }
+                });
+                logger.d("lista adicionada com sucesso $titulo");
               },
             ),
           ],
@@ -167,7 +204,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
               SizedBox(height: 16),
 
-              ListView.builder( // estudar o funcionamento dessa função ela pode ajudar na questão de passar os dados para a tela da nova lista
+              ListView.builder(
+                // estudar o funcionamento dessa função ela pode ajudar na questão de passar os dados para a tela da nova lista
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: _taskController.tarefasAtivas.length,
@@ -618,13 +656,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     cursorColor: Colors.blueAccent,
                     style: TextStyle(color: Colors.blueAccent),
                     onSubmitted: (String inputNovaTarefa) {
-                      if (inputNovaTarefa.trim().isEmpty) {
-                        return;
-                      }
                       setState(() {
-                        _taskController.adicionarTarefa(inputNovaTarefa);
-                        _controller.clear();
-                        clicouNoCampo = false;
+                        if (inputNovaTarefa.isNotEmpty) {
+                          _taskController.adicionarTarefa(inputNovaTarefa);
+                          _controller.clear();
+                          clicouNoCampo = false;
+                        } else {
+                          _controller.clear();
+                          clicouNoCampo = false;
+                        }
                       });
                       logger.d(
                         "tarefa adicionada com sucesso $inputNovaTarefa",

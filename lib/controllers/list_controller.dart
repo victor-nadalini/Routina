@@ -6,8 +6,7 @@ import 'package:logger/logger.dart';
 class ListTasksController {
   final Logger logger = Logger();
 
-  static Box get listTasks => Hive.box('listtasks');
-
+  static Box<Listtasks> get listTasks => Hive.box<Listtasks>('listtasks'); // estava abrindo o open box dinoov aaqui
   final _uuid = Uuid();
 
   void addTaskList(String titulo) {

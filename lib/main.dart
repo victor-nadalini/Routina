@@ -44,11 +44,12 @@ void main() async {
     Hive.registerAdapter(PlanbAdapter());
     Hive.registerAdapter(TaskAdapter());
 
-
     await Hive.openBox<Listtasks>('listtasks');
     await Hive.openBox('PlanosB');
     await Hive.openBox('TasksAtivas');
     await Hive.openBox('TasksConcluidas');
+
+    
   } catch (e) {
     final logger = Logger();
     logger.d('Error initialize App: $e');
