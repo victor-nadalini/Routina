@@ -19,4 +19,7 @@ class ListTasksController {
     listTasks.add(newList);
     logger.d("nova lista adicionada");
   }
+  void deleteAllLists() {
+    listTasks.clear();
+  }
 }

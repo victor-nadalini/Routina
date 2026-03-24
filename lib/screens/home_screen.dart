@@ -26,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool mostrarConcluida = false;
   bool mostrarPlanob = false;
   DateTime date = DateTime.now();
+  var tituloExibido = "Routina";
   late String dateFormat = DateFormat('EEE, dd MMM yyyy', 'pt_BR').format(date);
 
   final double _bottomSheetHeight = 60.0 + 16.0 + 33.0 + 60.0;
@@ -38,6 +39,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final planBController = Provider.of<PlanBController>(context);
+
+    final args = ModalRoute.of(context)?.settings.arguments;
+    final String tituloExibido = (args as String?) ?? "Routina";
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -59,14 +63,21 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.black,
         child: Column(
           children: [
-            const DrawerHeader(
-              padding: EdgeInsets.zero,
-              decoration: BoxDecoration(color: Colors.black),
-              child: Text(
-                "Victor Nadalini",
-                style: TextStyle(color: Colors.blueAccent),
-              ),
+            Padding(padding: EdgeInsetsGeometry.directional(top: 60)),
+            ListTile(
+              title: const Text("Victor Nadalini"),
+              textColor: Colors.blueAccent,
+              onTap: () {
+                Navigator.pop(context);
+              },
             ),
+
+            Container(
+              height: 1,
+              width: double.infinity,
+              color: Colors.blueAccent,
+            ),
+
             ListTile(
               title: const Text("Configurações"),
               textColor: Colors.blueAccent,
@@ -88,7 +99,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.pushReplacementNamed(context, '/');
               },
             ),
-            Container(height: 1, width: double.infinity, color: Colors.white24),
+            Container(
+              height: 1,
+              width: double.infinity,
+              color: Colors.blueAccent,
+            ),
             ListTile(
               title: const Text("Minha lista"),
               textColor: Colors.blueAccent,
@@ -96,7 +111,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.pushReplacementNamed(context, '/kanban');
               },
             ),
-            Divider(),
+            Container(
+              height: 1,
+              width: double.infinity,
+              color: Colors.blueAccent,
+            ),
 
             Expanded(
               // quando o menu hamburguer é aberto agora ele esta tudo escuro creio que os dados estejam ocupando a tela inteira
@@ -111,6 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   final listas = box.values.toList();
 
                   return ListView.builder(
+                    padding: EdgeInsets.all(0),
                     itemCount: listas.length,
                     itemBuilder: (context, index) {
                       final lista = box.getAt(index);
@@ -121,9 +141,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         title: Text(lista.titulo),
                         textColor: Colors.blueAccent,
                         onTap: () {
-                          // FECHAR o Drawer e AVISAR a Home para trocar a lista
-                          // Navigator.pop(context);
-                          // _selecionarLista(lista);
+                          logger.d("Navegando ate a lista ${lista.titulo}");
+
+                          Navigator.pushNamed(
+                            context,
+                            '/kanban',
+                            arguments: lista.titulo,
+                          );
                         },
                       );
                     },
@@ -158,7 +182,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     _controller.clear();
                     clicouNoCampoAdicionarLista = false;
                   } else {
-                    _listTasksController.addTaskList("Nova lista");
                     _controller.clear();
                     clicouNoCampoAdicionarLista = false;
                   }
@@ -168,6 +191,42 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        // este é um botão para uso esclusivo de desenvolvimento logo pensaremos em uma solução futura melhor
+        backgroundColor: Colors.redAccent,
+        child: const Icon(Icons.delete_sweep, color: Colors.white),
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder:
+                (context) => AlertDialog(
+                  title: const Text("Limpar TUDO?"),
+                  content: const Text(
+                    "Isso vai apagar todas as listas do Routina para teste.",
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text("Cancelar"),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          _listTasksController.deleteAllLists();
+                        });
+                        Navigator.pop(context);
+                        logger.d("Database resetada para testes.");
+                      },
+                      child: const Text(
+                        "APAGAR TUDO",
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
+                  ],
+                ),
+          );
+        },
       ),
       body: SingleChildScrollView(
         //padding: EdgeInsets.all(40),
@@ -191,7 +250,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Routina",
+                      tituloExibido,
                       style: TextStyle(color: Colors.blueAccent, fontSize: 30),
                     ),
                     Text(
