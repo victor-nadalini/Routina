@@ -38,10 +38,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final planBController = Provider.of<PlanBController>(context);
-
-    final args = ModalRoute.of(context)?.settings.arguments;
+    final planBController = Provider.of<PlanBController>(context); 
+    final args = ModalRoute.of(context)?.settings.arguments; 
     final String tituloExibido = (args as String?) ?? "Routina";
+
+    final Listtasks listaFiltrada = _listTasksController.buscarListaPorId(tituloExibido);
+
+    final List<Task> tarefasParaExibir = (tituloExibido == "Routina" || listaFiltrada.id == "erro_404")
+      ? _taskController.taskBoxAtivas.values.toList()
+      : listaFiltrada.tarefas;
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -118,14 +123,14 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
 
             Expanded(
-              // quando o menu hamburguer é aberto agora ele esta tudo escuro creio que os dados estejam ocupando a tela inteira
+              
               child: ValueListenableBuilder(
                 valueListenable: Hive.box<Listtasks>('listtasks').listenable(),
                 builder: (context, Box<Listtasks> box, _) {
                   if (box.isEmpty) {
                     return const Center(
                       child: Text("nenhuma lista foi encontrada"),
-                    ); // nenhuma lista esta sendo encontrada
+                    ); 
                   }
                   final listas = box.values.toList();
 
@@ -146,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Navigator.pushNamed(
                             context,
                             '/kanban',
-                            arguments: lista.titulo,
+                            arguments: lista.titulo, // o problema dos titulos iguais vou resolver igual o to do toda vez que um titulo igual for criando sera adicionado (1) nele
                           );
                         },
                       );
@@ -263,10 +268,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
               SizedBox(height: 16),
 
-              ListView.builder(
-                // estudar o funcionamento dessa função ela pode ajudar na questão de passar os dados para a tela da nova lista
+              ListView.builder( // estudara logica agora passa passar a lista de cada tarefa aqui
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
+                // adicionar uma especie de if para tituloexibido != "Routina" ele desenha as tarefas da lista atual agora que as listas não podem ser iguais (1) da pra fazer assim
                 itemCount: _taskController.tarefasAtivas.length,
                 itemBuilder: (context, index) {
                   var tarefa = _taskController.tarefasAtivas[index];
@@ -409,9 +414,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ListView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
-                  itemCount: _taskController.tarefasConcluidas.length,
+                  itemCount:_taskController.tarefasConcluidas.length,
                   itemBuilder: (context, index) {
-                    var tarefa = _taskController.tarefasConcluidas[index];
+                    var tarefa =_taskController.tarefasConcluidas[index];
                     return Dismissible(
                       key: Key(tarefa.id),
                       direction: DismissDirection.endToStart,
@@ -717,9 +722,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     onSubmitted: (String inputNovaTarefa) {
                       setState(() {
                         if (inputNovaTarefa.isNotEmpty) {
+                          if (tituloExibido != "Routina") {
+                            Listtasks listaAtual = _listTasksController.buscarListaPorId(tituloExibido);
+                            _listTasksController.addTaskInSublist(inputNovaTarefa, listaAtual);
+                            _controller.clear();
+                            clicouNoCampo = false;
+                          } else {
                           _taskController.adicionarTarefa(inputNovaTarefa);
                           _controller.clear();
                           clicouNoCampo = false;
+                          }
                         } else {
                           _controller.clear();
                           clicouNoCampo = false;

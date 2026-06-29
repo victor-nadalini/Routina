@@ -27,6 +27,7 @@ class TaskController {
   void adicionarTarefa(String titulo) {
     Task novaTarefa = Task(titulo: titulo, id: _uuid.v4());
     taskBoxAtivas.add(novaTarefa);
+
   }
 
   void concluirTarefa(int index) {
