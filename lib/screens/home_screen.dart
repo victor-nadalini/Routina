@@ -44,9 +44,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final Listtasks listaFiltrada = _listTasksController.buscarListaPorId(tituloExibido);
 
-    final List<Task> tarefasParaExibir = (tituloExibido == "Routina" || listaFiltrada.id == "erro_404")
-      ? _taskController.taskBoxAtivas.values.toList()
-      : listaFiltrada.tarefas;
+    final List tarefasParaExibir = (tituloExibido == "Routina" || listaFiltrada.id == "erro_404")
+      ? TaskController.taskBoxAtivas.values.toList()
+      : listaFiltrada.tarefas; // testar de noite parece que funcionar
 
     return Scaffold(
       backgroundColor: Colors.black,
