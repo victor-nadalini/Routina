@@ -44,6 +44,7 @@ void main() async {
     Hive.registerAdapter(PlanbAdapter());
     Hive.registerAdapter(TaskAdapter());
 
+
     await Hive.openBox<Listtasks>('listtasks');
     await Hive.openBox('PlanosB');
     await Hive.openBox('TasksAtivas');

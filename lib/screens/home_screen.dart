@@ -47,6 +47,10 @@ class _HomeScreenState extends State<HomeScreen> {
     final List tarefasParaExibir = (tituloExibido == "Routina" || listaFiltrada.id == "erro_404")
       ? TaskController.taskBoxAtivas.values.toList()
       : listaFiltrada.tarefas; // testar de noite parece que funcionar
+      
+    final List tarefasParaExibirConcluidas = (tituloExibido == "Routina" || listaFiltrada.id == "erro_404")
+      ? TaskController.taskBoxConcluidas.values.toList()
+      : listaFiltrada.tarefas; 
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -268,21 +272,29 @@ class _HomeScreenState extends State<HomeScreen> {
 
               SizedBox(height: 16),
 
-              ListView.builder( // estudara logica agora passa passar a lista de cada tarefa aqui
+              ListView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
-                // adicionar uma especie de if para tituloexibido != "Routina" ele desenha as tarefas da lista atual agora que as listas não podem ser iguais (1) da pra fazer assim
-                itemCount: _taskController.tarefasAtivas.length,
+
+                itemCount: tarefasParaExibir.length,
                 itemBuilder: (context, index) {
-                  var tarefa = _taskController.tarefasAtivas[index];
+                  var tarefa = tarefasParaExibir[index];
                   return Dismissible(
                     key: Key(tarefa.id),
                     direction: DismissDirection.endToStart,
                     onDismissed: (direction) {
-                      setState(() {
-                        _taskController.deleteTaskAtiva(index);
+                      setState(() { 
+
+                        tarefasParaExibir.removeAt(index);
+
+                        if (tituloExibido == "Routina") {
+                        _taskController.deleteTaskAtiva(index); 
                         logger.d("deletada tarefa $index");
-                      });
+                        logger.d("esta tarefa foi deletada no if de Routina $tituloExibido");
+                        } else {
+                        listaFiltrada.tarefas.removeWhere((t) => t.id == tarefa.id);
+                        listaFiltrada.save(); // Salva a sublista sem a tarefa deletada
+                      }});
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text("Tarefa removida")),
@@ -331,11 +343,18 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               onSubmitted: (newTitle) {
                                 setState(() {
+                                  if (tituloExibido == "Routina") {
                                   logger.d("update realizado");
                                   _taskController.updateTaskAtivas(
                                     index,
                                     newTitle,
                                   );
+                                  } else {
+                                    logger.d("update realizado nas sublistas");        
+                                    _listTasksController.updateTask(idDaLista: tituloExibido, idDaTarefa: tarefa.id, novoTitulo: newTitle);
+                                    listaFiltrada.save();
+
+                                  }
                                 });
                                 FocusScope.of(context).unfocus();
                               },
@@ -414,17 +433,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 ListView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
-                  itemCount:_taskController.tarefasConcluidas.length,
+                  itemCount:tarefasParaExibirConcluidas.length,
                   itemBuilder: (context, index) {
-                    var tarefa =_taskController.tarefasConcluidas[index];
+                    var tarefa = tarefasParaExibirConcluidas[index];
                     return Dismissible(
                       key: Key(tarefa.id),
                       direction: DismissDirection.endToStart,
                       onDismissed: (direction) {
-                        setState(() {
-                          _taskController.deleteTaskConcluidas(index);
+                        setState(() { 
+                          if (tituloExibido == "Routina") {
+                          _taskController.deleteTaskConcluidas(index); 
                           logger.d("deletada tarefa $index");
-                        });
+                          } else {
+                          logger.d("deletada tarefa da sublista concluida $index");
+                        }});
 
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text("Tarefa removida")),

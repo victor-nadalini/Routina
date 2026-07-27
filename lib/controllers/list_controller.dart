@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:routina/models/listTasks.dart';
 import 'package:routina/models/task.dart';
 import 'package:uuid/uuid.dart';
@@ -44,9 +45,38 @@ class ListTasksController {
 }
   void addTaskInSublist(String titulo, Listtasks listaAtual) { // tarefas da lista atual serão decididas a partir das tarefas criadas nessa função
     Task novaTarefa = Task(id: _uuid.v4(), titulo: titulo);
-    listaAtual.tarefas.add(novaTarefa);
+    listaAtual.tarefas.add(novaTarefa); // as tarefas são adicionadas na propriedade de "tarefas" pra rastrear tenho que salvar o valor da variavel em tarefas
     listaAtual.save();
     logger.d("Tarefa adicionada na lista: ${listaAtual.titulo}");
+    logger.d("valor dentro de lista atual tarefas: ${listaAtual.tarefas}"); // não tem valor nenhum porque o valor so passa aexistir quando esata na tela do app la é criado aqui so ha a execução não da para eu armazernar o valor que n~çao existe numa variavel
+
+  }
+  void updateTask({
+    required String idDaLista,
+    required String idDaTarefa,
+    required String novoTitulo
+  }) {
+    final Listtasks? listaCorreta = listTasks.values
+      .where((lista) => lista.id == idDaLista || lista.titulo == idDaLista)
+      .firstOrNull;
+
+    if(listaCorreta != null) {
+      final Task? tarefaParaAtualizar = listaCorreta.tarefas
+        .where((t) => t.id == idDaTarefa)
+        .firstOrNull;
+
+      if (tarefaParaAtualizar != null) {
+        tarefaParaAtualizar.titulo = novoTitulo;
+
+        listaCorreta.save();
+
+        logger.d("tarefa atualizada com sucesso $novoTitulo");
+      } else {
+        logger.e("Tarefa não encontrada dentro da sublista.");
+      }
+    } else {
+      logger.e("Sublista não encontrada.");
+    }
   }
   void deleteAllLists() {
     listTasks.clear();
