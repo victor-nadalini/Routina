@@ -77,6 +77,13 @@ class ListTasksController {
       logger.e("Sublista não encontrada.");
     }
   }
+
+  void deletarSublistas(Listtasks lista) {
+    lista.delete();
+  }
+  void updateTituloDaLista() {
+    
+  }
   void deleteAllLists() {
     listTasks.clear();
   }

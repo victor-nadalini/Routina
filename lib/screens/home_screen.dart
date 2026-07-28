@@ -38,19 +38,23 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final planBController = Provider.of<PlanBController>(context); 
-    final args = ModalRoute.of(context)?.settings.arguments; 
+    final planBController = Provider.of<PlanBController>(context);
+    final args = ModalRoute.of(context)?.settings.arguments;
     final String tituloExibido = (args as String?) ?? "Routina";
 
-    final Listtasks listaFiltrada = _listTasksController.buscarListaPorId(tituloExibido);
+    final Listtasks listaFiltrada = _listTasksController.buscarListaPorId(
+      tituloExibido,
+    );
 
-    final List tarefasParaExibir = (tituloExibido == "Routina" || listaFiltrada.id == "erro_404")
-      ? TaskController.taskBoxAtivas.values.toList()
-      : listaFiltrada.tarefas; // testar de noite parece que funcionar
-      
-    final List tarefasParaExibirConcluidas = (tituloExibido == "Routina" || listaFiltrada.id == "erro_404")
-      ? TaskController.taskBoxConcluidas.values.toList()
-      : listaFiltrada.tarefas; 
+    final List tarefasParaExibir =
+        (tituloExibido == "Routina" || listaFiltrada.id == "erro_404")
+            ? TaskController.taskBoxAtivas.values.toList()
+            : listaFiltrada.tarefas; // testar de noite parece que funcionar
+
+    final List tarefasParaExibirConcluidas =
+        (tituloExibido == "Routina" || listaFiltrada.id == "erro_404")
+            ? TaskController.taskBoxConcluidas.values.toList()
+            : listaFiltrada.tarefas;
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -127,37 +131,54 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
 
             Expanded(
-              
               child: ValueListenableBuilder(
                 valueListenable: Hive.box<Listtasks>('listtasks').listenable(),
                 builder: (context, Box<Listtasks> box, _) {
                   if (box.isEmpty) {
                     return const Center(
                       child: Text("nenhuma lista foi encontrada"),
-                    ); 
+                    );
                   }
                   final listas = box.values.toList();
 
                   return ListView.builder(
+                    // aqui é onde as listas são contruidas onde posso adicionar o apagar
                     padding: EdgeInsets.all(0),
                     itemCount: listas.length,
                     itemBuilder: (context, index) {
-                      final lista = box.getAt(index);
+                      final lista = listas[index];
 
-                      if (lista == null) return const SizedBox();
-
-                      return ListTile(
-                        title: Text(lista.titulo),
-                        textColor: Colors.blueAccent,
-                        onTap: () {
-                          logger.d("Navegando ate a lista ${lista.titulo}");
-
-                          Navigator.pushNamed(
-                            context,
-                            '/kanban',
-                            arguments: lista.titulo, // o problema dos titulos iguais vou resolver igual o to do toda vez que um titulo igual for criando sera adicionado (1) nele
-                          );
+                      return Dismissible(
+                        key: Key(lista.id),
+                        background: Container(
+                          margin: EdgeInsets.only(top: 11),
+                          color: Colors.blueAccent,
+                          alignment: Alignment.centerRight,
+                          padding: EdgeInsets.only(right: 20),
+                          child: Icon(Icons.delete, color: Colors.white),
+                        ),
+                        direction: DismissDirection.endToStart,
+                        onDismissed: (direction) {
+                          setState(() {
+                            _listTasksController.deletarSublistas(lista);
+                          });
                         },
+
+                        child: ListTile(
+                          title: Text(lista.titulo),
+                          textColor: Colors.blueAccent,
+                          onTap: () {
+                            logger.d("Navegando ate a lista ${lista.titulo}");
+
+                            Navigator.pushNamed(
+                              context,
+                              '/kanban',
+                              arguments:
+                                  lista
+                                      .titulo, // o problema dos titulos iguais vou resolver igual o to do toda vez que um titulo igual for criando sera adicionado (1) nele
+                            );
+                          },
+                        ),
                       );
                     },
                   );
@@ -283,18 +304,23 @@ class _HomeScreenState extends State<HomeScreen> {
                     key: Key(tarefa.id),
                     direction: DismissDirection.endToStart,
                     onDismissed: (direction) {
-                      setState(() { 
-
+                      setState(() {
                         tarefasParaExibir.removeAt(index);
 
                         if (tituloExibido == "Routina") {
-                        _taskController.deleteTaskAtiva(index); 
-                        logger.d("deletada tarefa $index");
-                        logger.d("esta tarefa foi deletada no if de Routina $tituloExibido");
+                          _taskController.deleteTaskAtiva(index);
+                          logger.d("deletada tarefa $index");
+                          logger.d(
+                            "esta tarefa foi deletada no if de Routina $tituloExibido",
+                          );
                         } else {
-                        listaFiltrada.tarefas.removeWhere((t) => t.id == tarefa.id);
-                        listaFiltrada.save(); // Salva a sublista sem a tarefa deletada
-                      }});
+                          listaFiltrada.tarefas.removeWhere(
+                            (t) => t.id == tarefa.id,
+                          );
+                          listaFiltrada
+                              .save(); // Salva a sublista sem a tarefa deletada
+                        }
+                      });
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text("Tarefa removida")),
@@ -344,16 +370,19 @@ class _HomeScreenState extends State<HomeScreen> {
                               onSubmitted: (newTitle) {
                                 setState(() {
                                   if (tituloExibido == "Routina") {
-                                  logger.d("update realizado");
-                                  _taskController.updateTaskAtivas(
-                                    index,
-                                    newTitle,
-                                  );
+                                    logger.d("update realizado");
+                                    _taskController.updateTaskAtivas(
+                                      index,
+                                      newTitle,
+                                    );
                                   } else {
-                                    logger.d("update realizado nas sublistas");        
-                                    _listTasksController.updateTask(idDaLista: tituloExibido, idDaTarefa: tarefa.id, novoTitulo: newTitle);
+                                    logger.d("update realizado nas sublistas");
+                                    _listTasksController.updateTask(
+                                      idDaLista: tituloExibido,
+                                      idDaTarefa: tarefa.id,
+                                      novoTitulo: newTitle,
+                                    );
                                     listaFiltrada.save();
-
                                   }
                                 });
                                 FocusScope.of(context).unfocus();
@@ -433,20 +462,23 @@ class _HomeScreenState extends State<HomeScreen> {
                 ListView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
-                  itemCount:tarefasParaExibirConcluidas.length,
+                  itemCount: tarefasParaExibirConcluidas.length,
                   itemBuilder: (context, index) {
                     var tarefa = tarefasParaExibirConcluidas[index];
                     return Dismissible(
                       key: Key(tarefa.id),
                       direction: DismissDirection.endToStart,
                       onDismissed: (direction) {
-                        setState(() { 
+                        setState(() {
                           if (tituloExibido == "Routina") {
-                          _taskController.deleteTaskConcluidas(index); 
-                          logger.d("deletada tarefa $index");
+                            _taskController.deleteTaskConcluidas(index);
+                            logger.d("deletada tarefa $index");
                           } else {
-                          logger.d("deletada tarefa da sublista concluida $index");
-                        }});
+                            logger.d(
+                              "deletada tarefa da sublista concluida $index",
+                            );
+                          }
+                        });
 
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text("Tarefa removida")),
@@ -745,14 +777,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       setState(() {
                         if (inputNovaTarefa.isNotEmpty) {
                           if (tituloExibido != "Routina") {
-                            Listtasks listaAtual = _listTasksController.buscarListaPorId(tituloExibido);
-                            _listTasksController.addTaskInSublist(inputNovaTarefa, listaAtual);
+                            Listtasks listaAtual = _listTasksController
+                                .buscarListaPorId(tituloExibido);
+                            _listTasksController.addTaskInSublist(
+                              inputNovaTarefa,
+                              listaAtual,
+                            );
                             _controller.clear();
                             clicouNoCampo = false;
                           } else {
-                          _taskController.adicionarTarefa(inputNovaTarefa);
-                          _controller.clear();
-                          clicouNoCampo = false;
+                            _taskController.adicionarTarefa(inputNovaTarefa);
+                            _controller.clear();
+                            clicouNoCampo = false;
                           }
                         } else {
                           _controller.clear();
