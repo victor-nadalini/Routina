@@ -54,7 +54,7 @@ void main() async {
   } catch (e) {
     final logger = Logger();
     logger.d('Error initialize App: $e');
-  }
+  } 
 }
 
 class MyApp extends StatelessWidget {
