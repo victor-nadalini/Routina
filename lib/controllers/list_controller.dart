@@ -81,8 +81,15 @@ class ListTasksController {
   void deletarSublistas(Listtasks lista) {
     lista.delete();
   }
-  void updateTituloDaLista() {
-    
+  void updateTituloDaLista(int id, String newTitle) {
+    final lista = listTasks.getAt(id) as Listtasks;
+
+    final updateLista = (
+      id: lista.id,
+      titulo: newTitle,
+    );
+
+    listTasks.putAt(id, updateLista as Listtasks);
   }
   void deleteAllLists() {
     listTasks.clear();

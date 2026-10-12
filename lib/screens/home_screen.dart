@@ -17,6 +17,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  double _atualProgressoBdeletarOueditar = 0.0;
   final TaskController _taskController = TaskController();
   final ListTasksController _listTasksController = ListTasksController();
   final logger = Logger();
@@ -151,18 +152,64 @@ class _HomeScreenState extends State<HomeScreen> {
                       return Dismissible(
                         key: Key(lista.id),
                         background: Container(
-                          margin: EdgeInsets.only(top: 11),
-                          color: Colors.blueAccent,
+                          margin: const EdgeInsets.only(top: 11),
+                          color:
+                              _atualProgressoBdeletarOueditar > 0.4
+                                  ? Colors.red
+                                  : Colors.blueAccent,
                           alignment: Alignment.centerRight,
-                          padding: EdgeInsets.only(right: 20),
-                          child: Icon(Icons.delete, color: Colors.white),
+                          padding: const EdgeInsets.only(right: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                _atualProgressoBdeletarOueditar > 0.4
+                                    ? "Solte para Apagar"
+                                    : "Solte para Editar",
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Icon(
+                                _atualProgressoBdeletarOueditar > 0.4
+                                    ? Icons.delete
+                                    : Icons.edit,
+                                color: Colors.white,
+                              ),
+                            ],
+                          ),
                         ),
                         direction: DismissDirection.endToStart,
-                        onDismissed: (direction) {
+
+                        onUpdate: (details) {
                           setState(() {
-                            _listTasksController.deletarSublistas(lista);
+                            _atualProgressoBdeletarOueditar = details.progress;
                           });
                         },
+
+                        confirmDismiss: (direction) async {
+                          if (_atualProgressoBdeletarOueditar > 0.4) {
+                            _listTasksController.deletarSublistas(lista);
+                            logger.d("função de apagar lista está REGISTRANDO");
+                            return true;
+                          } else {
+                            logger.d(
+                              "função de editar titulo da lista está executando!",
+                            );
+
+                            _listTasksController.updateTituloDaLista(
+                              index,
+                              tituloExibido,
+                            );
+
+                            return false;
+                          }
+                        },
+
+                        // Como o confirmDismiss já trata a ação de apagar, o onDismissed pode ficar vazio ou apenas para feedback visual
+                        onDismissed: (direction) {},
 
                         child: ListTile(
                           title: Text(lista.titulo),
